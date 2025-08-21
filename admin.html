@@ -183,7 +183,7 @@
 
 <!-- Firebase v10 (ESM) + Firestore-Whitelist -->
 <script type="module">
-  // ==== Deine Firebase-Konfiguration ====
+  // ==== Firebase-Config ====
   const firebaseConfig = {
     apiKey: "AIzaSyAXT3mrIMnR2owxFaJFIlfvtD94B99LIXw",
     authDomain: "urlaubsplaner-c14e8.firebaseapp.com",
@@ -192,14 +192,52 @@
     messagingSenderId: "440153496199",
     appId: "1:440153496199:web:9f865535b50ec6de69f622"
   };
-   import {
-    collection, query, where, getDocs, doc, getDoc
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
+    signInWithRedirect, getRedirectResult, signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import {
+    getFirestore, doc, getDoc, collection, query, where, getDocs
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+  // --- Initialisieren (muss vor isWhitelisted passieren!) ---
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+  window.firebaseAuth = auth;        // optional für Konsole
+  window.db = db;                    // optional fürs Debuggen
+
+  const $ = (s, r=document)=>r.querySelector(s);
+  const login  = $('#login-screen');
+  const appMain= $('#admin-app');
+  const who    = $('#whoami');
+  const msg    = $('#login-msg');
+  const google = new GoogleAuthProvider();
+
+  function gate(open, user=null){
+    if(open){
+      login.hidden = true; appMain.hidden = false;
+      if(who && user) who.textContent = user.displayName || user.email;
+      if(!document.getElementById('admin-boot')){
+        const s = document.createElement('script');
+        s.id = 'admin-boot';
+        s.src = 'assets/js/admin.remote.js';
+        document.body.appendChild(s);
+      }
+    }else{
+      appMain.hidden = true; login.hidden = false;
+      if(who) who.textContent = '';
+    }
+  }
+
+  // --- Whitelist: erst UID-Dok, dann E-Mail-Fallback (mit klaren Logs) ---
   async function isWhitelisted(user){
     const log = (...a)=>console.log("[WL]", ...a);
+
+    // 1) UID-Dokument
     try{
-      // 1) UID-Dokument lesen
       const ref  = doc(db, "Whitelist", user.uid);
       const snap = await getDoc(ref);
       log("UID doc:", ref.id, "exists:", snap.exists());
@@ -212,7 +250,7 @@
       if (msg) msg.textContent = "Whitelist (UID) nicht lesbar: " + e.message;
     }
 
-    // 2) Fallback: Suche per E-Mail
+    // 2) Fallback: per E-Mail
     try{
       const q = query(
         collection(db,"Whitelist"),
@@ -231,6 +269,32 @@
     }
     return false;
   }
+
+  // Redirect-Result (falls Popup geblockt)
+  try { await getRedirectResult(auth); } catch {}
+
+  // Auth-State
+  onAuthStateChanged(auth, async (user) => {
+    console.log("Auth state:", user?.uid, user?.email);
+    if(!user){ gate(false); return; }
+    const ok = await isWhitelisted(user);
+    if(ok) gate(true, user);
+    else { gate(false); if (msg) msg.textContent = "Kein Zugriff: Account nicht freigeschaltet."; }
+  });
+
+  // Login: Popup → Fallback Redirect
+  $('#btn-google')?.addEventListener('click', async () => {
+    msg.textContent = '';
+    try{ await signInWithPopup(auth, google); }
+    catch(e){
+      console.warn("Popup-Login fehlgeschlagen, versuche Redirect:", e.code);
+      try{ await signInWithRedirect(auth, google); }
+      catch(err){ msg.textContent = err.message; }
+    }
+  });
+
+  // Logout
+  $('#btn-logout')?.addEventListener('click', () => signOut(auth));
 
   // Für die Konsole (Debug):
   window.__fs = { collection, query, where, getDocs, doc, getDoc, db };
