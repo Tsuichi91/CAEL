@@ -192,58 +192,27 @@
     messagingSenderId: "440153496199",
     appId: "1:440153496199:web:9f865535b50ec6de69f622"
   };
-  // =====================================
-
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
-    signInWithRedirect, getRedirectResult, signOut
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import {
-    getFirestore, doc, getDoc,
-    collection, query, where, getDocs
+   import {
+    collection, query, where, getDocs, doc, getDoc
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  const app  = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db   = getFirestore(app);
-  window.firebaseAuth = auth;
-
-  const $ = (s, r=document)=>r.querySelector(s);
-  const login  = $('#login-screen');
-  const appMain= $('#admin-app');
-  const who    = $('#whoami');
-  const msg    = $('#login-msg');
-  const google = new GoogleAuthProvider();
-
-  function gate(open, user=null){
-    if(open){
-      login.hidden = true; appMain.hidden = false;
-      if(who && user) who.textContent = user.displayName || user.email;
-      if(!document.getElementById('admin-boot')){
-        const s = document.createElement('script');
-        s.id = 'admin-boot';
-        s.src = 'assets/js/admin.remote.js';
-        document.body.appendChild(s);
-      }
-    }else{
-      appMain.hidden = true; login.hidden = false;
-      if(who) who.textContent = '';
-    }
-  }
-
-  // --- Whitelist-Check: zuerst UID-Dokument, danach Fallback via E-Mail ---
   async function isWhitelisted(user){
-    // 1) UID-Dokument
+    const log = (...a)=>console.log("[WL]", ...a);
     try{
-      const snap = await getDoc(doc(db, "Whitelist", user.uid));
+      // 1) UID-Dokument lesen
+      const ref  = doc(db, "Whitelist", user.uid);
+      const snap = await getDoc(ref);
+      log("UID doc:", ref.id, "exists:", snap.exists());
       if (snap.exists()) {
-        const d = snap.data();
+        const d = snap.data(); log("UID data:", d);
         return d.admin === true && (d.status ?? "approved") === "approved";
       }
-    }catch{}
+    }catch(e){
+      log("UID read error:", e);
+      if (msg) msg.textContent = "Whitelist (UID) nicht lesbar: " + e.message;
+    }
 
-    // 2) Fallback per E-Mail
+    // 2) Fallback: Suche per E-Mail
     try{
       const q = query(
         collection(db,"Whitelist"),
@@ -251,52 +220,20 @@
         where("status","==","approved")
       );
       const r = await getDocs(q);
-      return !r.empty && r.docs[0].data().admin === true;
+      log("Email query size:", r.size);
+      if (!r.empty) {
+        const d = r.docs[0].data(); log("Email data:", d);
+        return d.admin === true;
+      }
     }catch(e){
-      console.error("Whitelist-Query:", e);
-      return false;
+      log("Email query error:", e);
+      if (msg) msg.textContent = "Whitelist-Query nicht lesbar: " + e.message;
     }
+    return false;
   }
 
-  // --- Redirect-Result beim Laden einsammeln (falls Popup blockiert) ---
-  try { await getRedirectResult(auth); } catch {}
-
-  // --- Auth-State beobachten ---
-  onAuthStateChanged(auth, async (user) => {
-    console.log("Auth state:", user?.uid, user?.email);
-    if(!user){ gate(false); return; }
-    try{
-      const ok = await isWhitelisted(user);
-      if(ok) gate(true, user);
-      else { gate(false); if (msg) msg.textContent = "Kein Zugriff: Account nicht freigeschaltet."; }
-    }catch(e){
-      gate(false);
-      if (msg) msg.textContent = "Whitelist kann nicht gelesen werden. Prüfe Firestore-Regeln.";
-    }
-  });
-
-  // --- Login-Button: Popup, bei Block → Redirect ---
-  $('#btn-google')?.addEventListener('click', async () => {
-    msg.textContent = '';
-    try{
-      await signInWithPopup(auth, google);
-    }catch(e){
-      console.warn("Popup-Login fehlgeschlagen, versuche Redirect:", e.code);
-      try{ await signInWithRedirect(auth, google); }
-      catch(err){ msg.textContent = err.message; }
-    }
-  });
-
-  // --- Logout ---
-  $('#btn-logout')?.addEventListener('click', () => signOut(auth));
-
-  // Sicherheitsnetz (nur zur Sicherheit doppelt)
-  if(!document.querySelector('meta[name="robots"]')){
-    const m=document.createElement('meta'); m.name='robots'; m.content='noindex,nofollow'; document.head.appendChild(m);
-  }
-
-  // Console-Helfer zum Debuggen (optional)
-  window.__fs = { db, doc, getDoc, collection, query, where, getDocs };
+  // Für die Konsole (Debug):
+  window.__fs = { collection, query, where, getDocs, doc, getDoc, db };
 </script>
 
 <footer><div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div></footer>
