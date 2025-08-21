@@ -116,79 +116,45 @@ label{display:block;margin:.4rem 0 .2rem}.card input,.card textarea,.card select
 }
 /* globals window, document */
 
-// --- Firestore helpers provided via socials.html ---
-const { collection, getDocs, query, where, doc, getDoc } = (window.__fs || {});
-const db = window.db;
-
-// small HTML escape
-const esc = (s='') => String(s)
-  .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-  .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-
-async function fetchPosts(platform){
-  if(!db || !collection){ console.warn('[socials] Firestore not ready'); return []; }
-  const snap = await getDocs(query(collection(db,'posts'), where('platform','==', platform)));
-  const arr  = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-  // newest first
-  arr.sort((a,b)=> (b.ts||0) - (a.ts||0));
-  return arr;
+/* === Social Feed (uniform grid + clean cards) ============================= */
+.feed{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap:16px;
+  align-items:start;                /* keeps first rows aligned */
 }
 
-function render(posts){
-  const feed = document.getElementById('feed');
-  if(!feed) return;
-
-  if(!posts.length){
-    feed.innerHTML = `<div class="meta">Noch keine Beiträge — nutze die Admin-Seite (admin.html), um Posts zu erstellen.</div>`;
-    return;
-  }
-
-  feed.innerHTML = posts.map(p=>{
-    const avatar = p.avatar || 'assets/avatar.png';
-    const media  = p.img || avatar;     // fallback: show avatar as image if no post image
-    const user   = p.user || '@user';
-    const text   = p.text || '';
-
-    return `
-      <article class="post-card">
-        <div class="post-media">
-          <img src="${esc(media)}" alt="">
-        </div>
-        <div class="post-body">
-          <div class="post-meta">
-            <img class="avatar" src="${esc(avatar)}" alt="">
-            <div class="user">${esc(user)}</div>
-          </div>
-          <div class="post-text">${esc(text)}</div>
-        </div>
-      </article>
-    `;
-  }).join('');
+.post{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
 }
 
-async function loadPlatform(platform){
-  document.querySelectorAll('.tabs .tab').forEach(b=>{
-    b.classList.toggle('active', b.dataset.id === platform);
-  });
-  const feed = document.getElementById('feed');
-  if(feed) feed.dataset.platform = platform;
-
-  try {
-    const posts = await fetchPosts(platform);
-    render(posts);
-  } catch(err){
-    console.error('[socials] load error:', err);
-    const feed = document.getElementById('feed');
-    if(feed) feed.innerHTML = `<div class="meta">Konnte Beiträge nicht laden.</div>`;
-  }
+/* media frame – 4:5 looks nicer for social posts; switch to 1/1 for square */
+.post-img{
+  width:100%;
+  aspect-ratio:4/5;                 /* change to 1/1 if you want square */
+  object-fit:cover;
+  display:block;
+  background:#0b0b0b;
 }
 
-// called from HTML
-window.setTab = loadPlatform;
-
-// auto-init (fallback)
-document.addEventListener('DOMContentLoaded', ()=> {
-  const current = document.getElementById('feed')?.dataset.platform || 'instagram';
-  loadPlatform(current);
-});
-
+.post-body{ padding:.8rem .9rem 1rem; }
+.post-header{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  margin-bottom:.35rem;
+}
+.post-header .avatar{
+  width:28px; height:28px; flex:0 0 28px;
+  border-radius:50%;
+  object-fit:cover;
+}
+.post-text{
+  white-space:pre-wrap;             /* keep line breaks */
+  overflow-wrap:anywhere;           /* avoid overflow */
+  color:var(--text);
+}
