@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>CΛEL — Admin</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/data-source.js"></script>
+  <script src="assets/js/admin.remote.js"></script>
+</head>
+<body>
+<header>
+  <div class="container nav">
+<div class="brand">
+  <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
+  <span class="brand-title letter-spin">CΛEL</span>
+</div>
+    <nav class="navlinks" aria-label="Hauptnavigation">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="disco.html">Discography</a>
+      <a href="timeline.html">Timeline</a>
+      <a href="player.html">Music Player</a>
+      <a href="socials.html">Socials</a>
+      <a href="downloads.html" class="active">Downloads</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+<section id="login-screen" class="container" style="max-width:720px;margin:3rem auto 0">
+  <article class="card">
+    <h2>Admin-Login</h2>
+    <p class="meta">Bitte melde dich an, um den Admin-Bereich zu nutzen.</p>
+
+    <div class="bar" style="margin:.8rem 0">
+      <button id="btn-google" class="btn">Anmelden</button>
+    </div>
+  </article>
+</section>
+<main class="container">
+  <h2>Admin</h2>
+  <p class="meta">Beiträge & Timeline-Events verwalten. Daten werden lokal in deinem Browser gespeichert (localStorage).</p>
+  <div id="tabs" class="tabs" role="tablist" style="margin-bottom:.6rem">
+    <button class="tab" data-id="tab-insta">Instagram</button>
+    <button class="tab" data-id="tab-fb">Facebook</button>
+    <button class="tab" data-id="tab-x">X</button>
+    <button class="tab" data-id="tab-tiktok">TikTok</button>
+    <button class="tab" data-id="tab-events">Timeline Events</button>
+  </div>
+  <div id="tabviews">
+    <section id="tab-insta" hidden>
+      <div class="card">
+        <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">Instagram</span></h3>
+        <input type="hidden" id="f-id">
+        <div class="form-grid">
+          <div><label>Nutzername</label><input id="f-user" placeholder="@cael_official"></div>
+          <div><label>Avatar-URL</label><input id="f-avatar" placeholder="assets/avatar.png"></div>
+          <div><label>Bild/Video-URL</label><input id="f-img" placeholder="assets/covers/veins.png"></div>
+          <div class="full"><label>Text</label><textarea id="f-text" rows="3"></textarea></div>
+        </div>
+        <div class="bar"><button class="btn" id="f-save">Speichern</button><button class="btn" id="f-export" type="button">Export</button><label class="btn"><input type="file" id="f-import" hidden>Import</label></div>
+      </div>
+      <h3 style="margin-top:1rem">Beiträge</h3>
+      <div id="list-insta" class="admin-list"></div>
+    </section>
+    <section id="tab-fb" hidden>
+      <div class="card">
+        <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">Facebook</span></h3>
+        <input type="hidden" id="f-id">
+        <div class="form-grid">
+          <div><label>Nutzername</label><input id="f-user" placeholder="@cael_official"></div>
+          <div><label>Avatar-URL</label><input id="f-avatar" placeholder="assets/avatar.png"></div>
+          <div><label>Bild/Video-URL</label><input id="f-img" placeholder="assets/covers/veins.png"></div>
+          <div class="full"><label>Text</label><textarea id="f-text" rows="3"></textarea></div>
+        </div>
+        <div class="bar"><button class="btn" id="f-save">Speichern</button><button class="btn" id="f-export" type="button">Export</button><label class="btn"><input type="file" id="f-import" hidden>Import</label></div>
+      </div>
+      <h3 style="margin-top:1rem">Beiträge</h3>
+      <div id="list-fb" class="admin-list"></div>
+    </section>
+    <section id="tab-x" hidden>
+      <div class="card">
+        <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">X</span></h3>
+        <input type="hidden" id="f-id">
+        <div class="form-grid">
+          <div><label>Nutzername</label><input id="f-user" placeholder="@cael_official"></div>
+          <div><label>Avatar-URL</label><input id="f-avatar" placeholder="assets/avatar.png"></div>
+          <div><label>Bild/Video-URL</label><input id="f-img" placeholder="assets/covers/veins.png"></div>
+          <div class="full"><label>Text</label><textarea id="f-text" rows="3"></textarea></div>
+        </div>
+        <div class="bar"><button class="btn" id="f-save">Speichern</button><button class="btn" id="f-export" type="button">Export</button><label class="btn"><input type="file" id="f-import" hidden>Import</label></div>
+      </div>
+      <h3 style="margin-top:1rem">Beiträge</h3>
+      <div id="list-x" class="admin-list"></div>
+    </section>
+    <section id="tab-tiktok" hidden>
+      <div class="card">
+        <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">TikTok</span></h3>
+        <input type="hidden" id="f-id">
+        <div class="form-grid">
+          <div><label>Nutzername</label><input id="f-user" placeholder="@cael_official"></div>
+          <div><label>Avatar-URL</label><input id="f-avatar" placeholder="assets/avatar.png"></div>
+          <div><label>Bild/Video-URL</label><input id="f-img" placeholder="assets/covers/veins.png"></div>
+          <div class="full"><label>Text</label><textarea id="f-text" rows="3"></textarea></div>
+        </div>
+        <div class="bar"><button class="btn" id="f-save">Speichern</button><button class="btn" id="f-export" type="button">Export</button><label class="btn"><input type="file" id="f-import" hidden>Import</label></div>
+      </div>
+      <h3 style="margin-top:1rem">Beiträge</h3>
+      <div id="list-tiktok" class="admin-list"></div>
+    </section>
+    <section id="tab-events" hidden>
+      <div class="card">
+        <h3>Neues/zu bearbeitendes Event</h3>
+        <input type="hidden" id="e-id">
+        <div class="form-grid">
+          <div><label>Datum</label><input id="e-date" type="date" required></div>
+          <div><label>Titel</label><input id="e-title" required></div>
+          <div><label>Typ</label><select id="e-type"><option>Milestone</option><option>Debut</option><option>Single</option><option>Mini</option><option>Album</option><option>MV</option><option>Event</option><option>Other</option></select></div>
+          <div><label>Bild‑URL (optional)</label><input id="e-img"></div>
+          <div class="full"><label>Notiz</label><textarea id="e-note" rows="3"></textarea></div>
+        </div>
+        <div class="bar">
+          <button class="btn" id="e-save">Speichern</button>
+          <button class="btn" id="e-export" type="button">Export</button>
+          <label class="btn"><input type="file" id="e-import" hidden>Import</label>
+          <button class="btn danger" id="e-clear" type="button">Alle Custom‑Events löschen</button>
+        </div>
+      </div>
+      <h3 style="margin-top:1rem">Custom‑Events</h3>
+      <div id="list-events" class="admin-list"></div>
+    </section>
+  </div>
+</main>
+<!-- Firebase v10 (ESM) -->
+<script type="module">
+  /* ====  CONFIG: HIER dein Firebase-Konfig-Objekt einfügen  ==== */
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    appId: "YOUR_APP_ID"
+  };
+  /* ============================================================ */
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
+    signInWithEmailAndPassword, signOut
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+  // Admin-Whitelist (nur diese E-Mails haben Zugriff)
+  const ALLOW = [
+    "you@example.com",     // <— trage hier deine Admin-Mail(s) ein
+    // "zweite.person@domain.tld"
+  ];
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const g    = new GoogleAuthProvider();
+
+  const $ = (s, r=document) => r.querySelector(s);
+  const login = $('#login-screen');
+  const appMain = $('#admin-app');
+  const who = $('#whoami');
+  const msg = $('#login-msg');
+
+  function gate(open, user=null){
+    if(open){
+      login.hidden = true;
+      appMain.hidden = false;
+      if(who && user){
+        who.textContent = `${user.displayName || user.email} (${user.email})`;
+      }
+      // Admin-Code nur jetzt nachladen:
+      if(!document.getElementById('admin-boot')){
+        const s = document.createElement('script');
+        s.id = 'admin-boot';
+        s.src = 'assets/js/admin.remote.js';      // oder 'assets/js/admin.js'
+        document.body.appendChild(s);
+      }
+    }else{
+      appMain.hidden = true;
+      login.hidden = false;
+      if(who) who.textContent = '';
+    }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if(user && user.email && ALLOW.includes(user.email)){
+      gate(true, user);
+    }else{
+      gate(false);
+    }
+  });
+
+  // Login-Handler
+  $('#btn-google')?.addEventListener('click', async () => {
+    try{ await signInWithPopup(auth, g); }
+    catch(e){ msg.textContent = e.message; }
+  });
+
+  $('#btn-email')?.addEventListener('click', async () => {
+    msg.textContent = '';
+    const eml = $('#eml').value.trim();
+    const pwd = $('#pwd').value.trim();
+    try{ await signInWithEmailAndPassword(auth, eml, pwd); }
+    catch(e){ msg.textContent = e.message; }
+  });
+
+  // Logout
+  $('#btn-logout')?.addEventListener('click', () => signOut(auth));
+
+  // Kleiner Hinweis für Robots (optional doppelt gemoppelt)
+  if(!document.querySelector('meta[name="robots"]')){
+    const m=document.createElement('meta'); m.name='robots'; m.content='noindex,nofollow'; document.head.appendChild(m);
+  }
+</script>
+
+<!-- DataSource zuerst laden (bleibt gleich) -->
+<script src="assets/js/data-source.js"></script>
+<!-- KEIN direkter admin.remote.js-Import hier; das macht das Gate nach Login -->
+
+<footer><div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div></footer>
+<script>__applyTheme();__markActive();</script>
+</body></html>

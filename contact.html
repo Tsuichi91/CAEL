@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CΛEL — Kontakt</title>
+<link rel="stylesheet" href="assets/css/styles.css">
+<script src="assets/js/app.js"></script>
+
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+<div class="brand">
+  <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
+  <span class="brand-title letter-spin">CΛEL</span>
+</div>
+    <nav class="navlinks" aria-label="Hauptnavigation">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="disco.html">Discography</a>
+      <a href="timeline.html">Timeline</a>
+      <a href="player.html">Music Player</a>
+      <a href="socials.html">Socials</a>
+      <a href="downloads.html" class="active">Downloads</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+
+<h2>Kontakt & Impressum</h2>
+<div class="card">
+  <p><strong>Impressum (Platzhalter):</strong><br> Name/Anschrift/Email eintragen.</p>
+  <p><strong>E‑Mail:</strong> <a href="mailto:contact@cael-official.example">contact@cael-official.example</a> (Platzhalter)</p>
+</div>
+<div class="card" style="margin-top:1rem">
+  <h3>Kontaktformular</h3>
+  <form onsubmit="event.preventDefault(); window.location='mailto:contact@cael-official.example?subject=' + encodeURIComponent(document.getElementById('subject').value) + '&body=' + encodeURIComponent(document.getElementById('message').value + '\n\nVon: ' + document.getElementById('email').value);">
+    <label>Deine E‑Mail</label><input id="email" type="email" required placeholder="you@example.com">
+    <label>Betreff</label><input id="subject" required>
+    <label>Nachricht</label><textarea id="message" rows="6" required></textarea>
+    <button class="btn" type="submit">Senden</button>
+  </form>
+  <p class="meta">Hinweis: Das Formular nutzt dein E‑Mail‑Programm (mailto), kein Server erforderlich.</p>
+</div>
+
+</main>
+
+<footer>
+  <div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div>
+</footer>
+<script>__applyTheme();__markActive();</script>
+</body></html>

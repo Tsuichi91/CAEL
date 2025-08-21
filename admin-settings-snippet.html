@@ -1,0 +1,24 @@
+
+<!-- admin-settings-snippet.html -->
+<section class="card" style="margin-bottom:1rem">
+  <h3>Speicher-Einstellungen</h3>
+  <div class="form-grid">
+    <label>Modus
+      <select id="st-mode"><option value="local">Browser (localStorage)</option><option value="github">GitHub JSON</option></select>
+    </label>
+    <label>Owner <input id="st-owner" placeholder="z.B. username"></label>
+    <label>Repo <input id="st-repo" placeholder="z.B. cael-site"></label>
+    <label>Branch <input id="st-branch" placeholder="main" value="main"></label>
+    <label>Base Path <input id="st-base" placeholder="assets/data" value="assets/data"></label>
+    <label class="full">GitHub Token <input id="st-token" placeholder="ghp_..." type="password"></label>
+  </div>
+  <div class="bar"><button class="btn" id="st-save">Speichern</button><span id="status" class="meta"></span></div>
+</section>
+<script>
+(function(){
+  const DS=window.DataSource; if(!DS) return; const c=DS.cfg(); const el=id=>document.getElementById(id);
+  el('st-mode').value=c.mode||'local'; el('st-owner').value=c.owner||''; el('st-repo').value=c.repo||'';
+  el('st-branch').value=c.branch||'main'; el('st-base').value=c.basePath||'assets/data'; el('st-token').value=c.token||'';
+  el('st-save').onclick=()=>{ DS.setCfg({mode:el('st-mode').value,owner:el('st-owner').value.trim(),repo:el('st-repo').value.trim(),branch:(el('st-branch').value.trim()||'main'),basePath:(el('st-base').value.trim()||'assets/data'),token:el('st-token').value.trim()}); alert('Gespeichert. Seite lädt neu.'); location.reload(); };
+})();
+</script>

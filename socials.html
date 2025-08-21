@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CΛEL — Socials</title>
+<link rel="stylesheet" href="assets/css/styles.css">
+<script src="assets/js/app.js"></script>
+
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+<div class="brand">
+  <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
+  <span class="brand-title letter-spin">CΛEL</span>
+</div>
+    <nav class="navlinks" aria-label="Hauptnavigation">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="disco.html">Discography</a>
+      <a href="timeline.html">Timeline</a>
+      <a href="player.html">Music Player</a>
+      <a href="socials.html">Socials</a>
+      <a href="downloads.html" class="active">Downloads</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+<main class="container">
+
+<h2>Socials</h2>
+<div class="tabs">
+  <button class="tab active" data-id="insta" onclick="setTab('insta')">Instagram</button>
+  <button class="tab" data-id="fb" onclick="setTab('fb')">Facebook</button>
+  <button class="tab" data-id="x" onclick="setTab('x')">X</button>
+  <button class="tab" data-id="tiktok" onclick="setTab('tiktok')">TikTok</button>
+</div>
+<div id="feed" class="feed" data-platform="insta"></div>
+<script src="assets/js/socials.js"></script>
+<script>setTab('insta');</script>
+
+</main>
+
+<footer>
+  <div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div>
+</footer>
+<script>__applyTheme();__markActive();</script>
+</body></html>

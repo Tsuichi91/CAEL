@@ -1,0 +1,10 @@
+[
+  {
+    "id": "insta-sample",
+    "user": "@cael_official",
+    "avatar": "assets/avatar.png",
+    "img": "assets/covers/veins.png",
+    "text": "Hello from GitHub JSON!",
+    "time": 1722511200000
+  }
+]
