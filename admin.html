@@ -220,12 +220,24 @@
     if(open){
       login.hidden = true; appMain.hidden = false;
       if(who && user) who.textContent = user.displayName || user.email;
-      if(!document.getElementById('admin-boot')){
-        const s = document.createElement('script');
-        s.id = 'admin-boot';
-        s.src = 'assets/js/admin.remote.js';
-        document.body.appendChild(s);
-      }
+      if (!document.getElementById('admin-boot')) {
+  // 1) als Modul laden (falls admin.remote.js ESM verwendet)
+  const s = document.createElement('script');
+  s.id = 'admin-boot';
+  s.type = 'module';
+  s.src = 'assets/js/admin.remote.js';
+  s.onload  = () => console.log('[admin] boot (module) geladen');
+  s.onerror = () => {
+    console.warn('[admin] Modul-Load fehlgeschlagen – versuche Classic');
+    // 2) Fallback: klassisch laden
+    const s2 = document.createElement('script');
+    s2.id  = 'admin-boot-classic';
+    s2.src = 'assets/js/admin.remote.js';
+    s2.onload = () => console.log('[admin] boot (classic) geladen');
+    document.body.appendChild(s2);
+  };
+  document.body.appendChild(s);
+}
     }else{
       appMain.hidden = true; login.hidden = false;
       if(who) who.textContent = '';
