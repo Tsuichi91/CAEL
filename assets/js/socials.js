@@ -53,7 +53,7 @@
   function render(items) {
     if (!items.length) {
       feed.innerHTML =
-        '<div class="meta">Noch keine Beiträge — nutze die Admin-Seite (admin.html), um Posts zu erstellen.</div>';
+        '<div class="meta">Noch keine Beiträge — nutze die Froms, um Posts zu erstellen.</div>';
       return;
     }
     const frag = document.createDocumentFragment();
