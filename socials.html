@@ -1,47 +1,94 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CΛEL — Socials</title>
-<link rel="stylesheet" href="assets/css/styles.css">
-<script src="assets/js/app.js"></script>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CΛEL — Socials</title>
 
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/app.js"></script>
+
+  <!-- === Firestore-Lesen aktivieren (MUSS vor data-source.js stehen) === -->
+  <script>
+    // Quelle: Firestore (Failsafe: beide Flags setzen, je nachdem was data-source.js nutzt)
+    window.__DS_MODE = 'fs';
+    window.__DATA_MODE = 'fs';
+
+    // Deine Firebase-Konfiguration
+    window.__firebaseConfig = {
+      apiKey: "AIzaSyAXT3mrIMnR2owxFaJFIlfvtD94B99LIXw",
+      authDomain: "urlaubsplaner-c14e8.firebaseapp.com",
+      projectId: "urlaubsplaner-c14e8",
+      storageBucket: "urlaubsplaner-c14e8.firebasestorage.app",
+      messagingSenderId: "440153496199",
+      appId: "1:440153496199:web:9f865535b50ec6de69f622"
+    };
+  </script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore, collection, getDocs, query, where, doc, getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const app = initializeApp(window.__firebaseConfig);
+    const db  = getFirestore(app);
+
+    // Globale Hooks, die data-source.js / socials.js verwenden
+    window.db  = db;
+    window.__fs = { collection, getDocs, query, where, doc, getDoc };
+
+    console.log("[socials] Firestore Reader initialisiert");
+  </script>
+  <!-- Datenquelle erst nach dem Firestore-Setup laden -->
+  <script src="assets/js/data-source.js"></script>
 </head>
 <body>
 
 <header>
   <div class="container nav">
-<div class="brand">
-  <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
-  <span class="brand-title letter-spin">CΛEL</span>
-</div>
+    <div class="brand">
+      <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
+      <span class="brand-title letter-spin">CΛEL</span>
+    </div>
     <nav class="navlinks" aria-label="Hauptnavigation">
       <a href="index.html">Home</a>
       <a href="profile.html">Profile</a>
       <a href="disco.html">Discography</a>
       <a href="timeline.html">Timeline</a>
       <a href="player.html">Music Player</a>
-      <a href="socials.html">Socials</a>
-      <a href="downloads.html" class="active">Downloads</a>
+      <a href="socials.html" class="active">Socials</a>
+      <a href="downloads.html">Downloads</a>
       <a href="contact.html">Contact</a>
     </nav>
   </div>
 </header>
+
 <main class="container">
+  <h2>Socials</h2>
 
-<h2>Socials</h2>
-<div class="tabs">
-  <button class="tab active" data-id="insta" onclick="setTab('insta')">Instagram</button>
-  <button class="tab" data-id="fb" onclick="setTab('fb')">Facebook</button>
-  <button class="tab" data-id="x" onclick="setTab('x')">X</button>
-  <button class="tab" data-id="tiktok" onclick="setTab('tiktok')">TikTok</button>
-</div>
-<div id="feed" class="feed" data-platform="insta"></div>
-<script src="assets/js/socials.js"></script>
-<script>setTab('insta');</script>
+  <div class="tabs">
+    <!-- IDs & data-id jetzt exakt wie in Firestore -->
+    <button class="tab active"  data-id="instagram" onclick="setTab('instagram')">Instagram</button>
+    <button class="tab"        data-id="facebook"  onclick="setTab('facebook')">Facebook</button>
+    <button class="tab"        data-id="x"         onclick="setTab('x')">X</button>
+    <button class="tab"        data-id="tiktok"    onclick="setTab('tiktok')">TikTok</button>
+  </div>
 
+  <!-- Startet mit Instagram -->
+  <div id="feed" class="feed" data-platform="instagram"></div>
+
+  <script src="assets/js/socials.js"></script>
+  <script>
+    // Standard-Tab setzen
+    setTab('instagram');
+  </script>
 </main>
 
 <footer>
-  <div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div>
+  <div class="container">
+    <small>© <span id="year"></span> CΛEL — All Rights Reserved.</small>
+  </div>
 </footer>
 <script>__applyTheme();__markActive();</script>
-</body></html>
+</body>
+</html>
