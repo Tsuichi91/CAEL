@@ -203,12 +203,47 @@
     setDoc, deleteDoc, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // --- Initialisieren (muss vor isWhitelisted passieren!) ---
+  // --- Initialisieren ---
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db   = getFirestore(app);
-  window.firebaseAuth = auth; // optional für Konsole
-  window.db = db;             // optional fürs Debuggen
+  window.firebaseAuth = auth;
+  window.db = db;
+
+  // ---- Debug: globale Fehler sichtbar machen ----
+  window.addEventListener('unhandledrejection', e => {
+    console.error('[Unhandled promise]', e.reason || e);
+  });
+  window.addEventListener('error', e => {
+    console.error('[Window error]', e.error || e.message || e);
+  });
+
+  // ---- Debug: Firestore Logging-Wrapper ----
+  const _getDoc = getDoc;
+  const _getDocs = getDocs;
+  const _setDoc = setDoc;
+  const _deleteDoc = deleteDoc;
+
+  async function getDocLogged(ref){
+    const r = await _getDoc(ref);
+    console.log('[FS] getDoc ←', ref.path || ref.id, 'exists=', r.exists());
+    return r;
+  }
+  async function getDocsLogged(q){
+    const r = await _getDocs(q);
+    console.log('[FS] getDocs ← (query) size=', r.size);
+    return r;
+  }
+  async function setDocLogged(ref, data, options){
+    console.log('[FS] setDoc →', ref.path || ref.id, data, options||{});
+    try { return await _setDoc(ref, data, options); }
+    catch(e){ console.error('[FS] setDoc FAILED:', ref.path || ref.id, e); throw e; }
+  }
+  async function deleteDocLogged(ref){
+    console.log('[FS] deleteDoc →', ref.path || ref.id);
+    try { return await _deleteDoc(ref); }
+    catch(e){ console.error('[FS] deleteDoc FAILED:', ref.path || ref.id, e); throw e; }
+  }
 
   const $ = (s, r=document)=>r.querySelector(s);
   const login  = $('#login-screen');
@@ -224,7 +259,6 @@
 
       // Admin-Logik erst nach Login laden
       if (!document.getElementById('admin-boot')) {
-        // 1) Modul versuchen
         const s = document.createElement('script');
         s.id = 'admin-boot';
         s.type = 'module';
@@ -232,7 +266,6 @@
         s.onload  = () => console.log('[admin] boot (module) geladen');
         s.onerror = () => {
           console.warn('[admin] Modul-Load fehlgeschlagen – versuche Classic');
-          // 2) Fallback: klassisch
           const s2 = document.createElement('script');
           s2.id  = 'admin-boot-classic';
           s2.src = 'assets/js/admin.remote.js';
@@ -254,7 +287,7 @@
     // 1) UID-Dokument
     try{
       const ref  = doc(db, "Whitelist", user.uid);
-      const snap = await getDoc(ref);
+      const snap = await getDocLogged(ref);
       log("UID doc:", ref.id, "exists:", snap.exists());
       if (snap.exists()) {
         const d = snap.data(); log("UID data:", d);
@@ -272,7 +305,7 @@
         where("email","==", user.email),
         where("status","==","approved")
       );
-      const r = await getDocs(q);
+      const r = await getDocsLogged(q);
       log("Email query size:", r.size);
       if (!r.empty) {
         const d = r.docs[0].data(); log("Email data:", d);
@@ -311,13 +344,18 @@
   // Logout
   $('#btn-logout')?.addEventListener('click', () => signOut(auth));
 
-  // Für admin.remote.js & Konsole verfügbar machen
+  // Für admin.remote.js & Konsole verfügbar machen (mit Logging)
   window.__fs = {
     db,
     // Documents
-    doc, getDoc, setDoc, deleteDoc,
+    doc,
+    getDoc: getDocLogged,
+    setDoc: setDocLogged,
+    deleteDoc: deleteDocLogged,
     // Collections & Queries
-    collection, getDocs, query, where,
+    collection,
+    getDocs: getDocsLogged,
+    query, where,
     // Serverzeitstempel
     serverTimestamp
   };
