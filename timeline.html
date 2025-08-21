@@ -1,64 +1,112 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CΛEL — Timeline (Kacheln)</title>
-<link rel="stylesheet" href="assets/css/styles.css">
-<script src="assets/js/app.js"></script>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CΛEL — Timeline (Kacheln)</title>
 
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/app.js"></script>
+
+  <!-- === Firestore-Reading aktivieren (muss vor data-source.js stehen) === -->
+  <script>
+    // Quelle auf Firestore setzen (beide Varianten, je nach Nutzung in data-source.js)
+    window.__DS_MODE   = 'fs';
+    window.__DATA_MODE = 'fs';
+
+    // Firebase-Konfiguration
+    window.__firebaseConfig = {
+      apiKey: "AIzaSyAXT3mrIMnR2owxFaJFIlfvtD94B99LIXw",
+      authDomain: "urlaubsplaner-c14e8.firebaseapp.com",
+      projectId: "urlaubsplaner-c14e8",
+      storageBucket: "urlaubsplaner-c14e8.firebasestorage.app",
+      messagingSenderId: "440153496199",
+      appId: "1:440153496199:web:9f865535b50ec6de69f622"
+    };
+  </script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore, collection, getDocs, query, where, doc, getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const app = initializeApp(window.__firebaseConfig);
+    const db  = getFirestore(app);
+
+    // Globale Hooks, die von data-source.js / timeline-tiles.js genutzt werden
+    window.db  = db;
+    window.__fs = { collection, getDocs, query, where, doc, getDoc };
+
+    console.log("[timeline] Firestore Reader initialisiert");
+  </script>
+
+  <!-- Datenquelle erst nach Firestore-Setup laden -->
+  <script src="assets/js/data-source.js"></script>
 </head>
 <body>
 
 <header>
   <div class="container nav">
-<div class="brand">
-  <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
-  <span class="brand-title letter-spin">CΛEL</span>
-</div>
+    <div class="brand">
+      <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
+      <span class="brand-title letter-spin">CΛEL</span>
+    </div>
     <nav class="navlinks" aria-label="Hauptnavigation">
       <a href="index.html">Home</a>
       <a href="profile.html">Profile</a>
       <a href="disco.html">Discography</a>
-      <a href="timeline.html">Timeline</a>
+      <a href="timeline.html" class="active">Timeline</a>
       <a href="player.html">Music Player</a>
       <a href="socials.html">Socials</a>
-      <a href="downloads.html" class="active">Downloads</a>
+      <a href="downloads.html">Downloads</a>
       <a href="contact.html">Contact</a>
     </nav>
   </div>
 </header>
-<main class="container">
 
-<h2>Timeline — Kacheln <small class="meta">( <span id="evCount">0</span> Events )</small></h2>
-<div class="toolbar card" style="margin-bottom:1rem; display:grid; gap:.6rem; grid-template-columns:1fr auto;">
-  <input id="search" placeholder="Suche nach Titel, Typ, Datum …" aria-label="Suche">
-  <div style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center">
-    <div class="tabs" role="tablist" aria-label="Filter">
-      <button class="tab active" data-type="all">Alle</button>
-      <button class="tab" data-type="Milestone">Milestones</button>
-      <button class="tab" data-type="Debut">Debüt</button>
-      <button class="tab" data-type="Single">Singles</button>
-      <button class="tab" data-type="Mini">Mini‑Alben</button>
-      <button class="tab" data-type="Album">Alben</button>
-      <button class="tab" data-type="MV">MV</button>
+<main class="container">
+  <h2>Timeline — Kacheln <small class="meta">( <span id="evCount">0</span> Events )</small></h2>
+
+  <div class="toolbar card" style="margin-bottom:1rem; display:grid; gap:.6rem; grid-template-columns:1fr auto;">
+    <input id="search" placeholder="Suche nach Titel, Typ, Datum …" aria-label="Suche">
+    <div style="display:flex; gap:.4rem; flex-wrap:wrap; align-items:center">
+      <div class="tabs" role="tablist" aria-label="Filter">
+        <button class="tab active" data-type="all">Alle</button>
+        <button class="tab" data-type="Milestone">Milestones</button>
+        <button class="tab" data-type="Debut">Debüt</button>
+        <button class="tab" data-type="Single">Singles</button>
+        <button class="tab" data-type="Mini">Mini-Alben</button>
+        <button class="tab" data-type="Album">Alben</button>
+        <button class="tab" data-type="MV">MV</button>
+      </div>
     </div>
   </div>
-</div>
-<div id="tileGrid" class="tile-grid"></div>
-<dialog id="dlg" class="dlg">
-  <div class="dlg-inner">
-    <img class="dlg-img" alt="" style="display:none">
-    <h3 class="dlg-title">—</h3>
-    <div class="dlg-meta meta">—</div>
-    <p class="dlg-note">—</p>
-    <div style="text-align:right; margin-top:.6rem"><button class="btn" id="dlgClose">Schließen</button></div>
-  </div>
-</dialog>
-<script src="assets/js/timeline-data.js"></script>
-<script src="assets/js/timeline-tiles.js"></script>
 
+  <div id="tileGrid" class="tile-grid"></div>
+
+  <dialog id="dlg" class="dlg">
+    <div class="dlg-inner">
+      <img class="dlg-img" alt="" style="display:none">
+      <h3 class="dlg-title">—</h3>
+      <div class="dlg-meta meta">—</div>
+      <p class="dlg-note">—</p>
+      <div style="text-align:right; margin-top:.6rem">
+        <button class="btn" id="dlgClose">Schließen</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Statische Seed-Daten (optional) -->
+  <script src="assets/js/timeline-data.js"></script>
+  <!-- Tiles-Logik (merged statisch + Firestore-Custom-Events) -->
+  <script src="assets/js/timeline-tiles.js"></script>
 </main>
 
 <footer>
-  <div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div>
+  <div class="container">
+    <small>© <span id="year"></span> CΛEL — All Rights Reserved.</small>
+  </div>
 </footer>
 <script>__applyTheme();__markActive();</script>
-</body></html>
+</body>
+</html>
