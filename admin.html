@@ -7,10 +7,10 @@
 
   <link rel="stylesheet" href="assets/css/styles.css">
 
-  <!-- App Helpers (Theme, Active Link etc.) -->
+  <!-- App-Helper (Theme/Active Link) -->
   <script src="assets/js/app.js"></script>
 
-  <!-- DataSource nur EINMAL laden (vor dem Admin-Script nach Login) -->
+  <!-- DataSource einmalig laden (damit es nach Login verfügbar ist) -->
   <script src="assets/js/data-source.js"></script>
 </head>
 <body>
@@ -33,12 +33,14 @@
   </div>
 </header>
 
-<!-- Login-Screen (sichtbar bis Whitelist-Check bestanden) -->
+<!-- Login-Screen (sichtbar bis Whitelist passt) -->
 <section id="login-screen" class="container" style="max-width:720px;margin:2rem auto 0">
   <article class="card">
     <h2>Admin-Login</h2>
     <p class="meta">Melde dich mit deinem Account an.</p>
-    <div class="bar"><button id="btn-google" class="btn">Mit Account anmelden</button></div>
+    <div class="bar">
+      <button id="btn-google" class="btn">Mit Account anmelden</button>
+    </div>
     <div id="login-msg" class="meta" style="color:#f59f85"></div>
   </article>
 </section>
@@ -53,7 +55,7 @@
     </div>
   </div>
 
-  <p class="meta">Beiträge & Timeline-Events verwalten. (Speicher-Modus wählst du oben in den Admin-Einstellungen.)</p>
+  <p class="meta">Beiträge & Timeline-Events verwalten. (Speicher-Modus stellst du oben in den Admin-Einstellungen ein.)</p>
 
   <div id="tabs" class="tabs" role="tablist" style="margin-bottom:.6rem">
     <button class="tab" data-id="tab-insta">Instagram</button>
@@ -181,30 +183,27 @@
 
 <!-- Firebase v10 (ESM) + Firestore-Whitelist -->
 <script type="module">
-  /* ====  Deine Firebase-Konfiguration einsetzen  ==== */
+  /* ====  Deine Firebase-Konfiguration  ==== */
   const firebaseConfig = {
-  apiKey: "AIzaSyAXT3mrIMnR2owxFaJFIlfvtD94B99LIXw",
-  authDomain: "urlaubsplaner-c14e8.firebaseapp.com",
-  projectId: "urlaubsplaner-c14e8",
-  storageBucket: "urlaubsplaner-c14e8.firebasestorage.app",
-  messagingSenderId: "440153496199",
-  appId: "1:440153496199:web:9f865535b50ec6de69f622"
-};
-  /* ================================================ */
+    apiKey: "AIzaSyAXT3mrIMnR2owxFaJFIlfvtD94B99LIXw",
+    authDomain: "urlaubsplaner-c14e8.firebaseapp.com",
+    projectId: "urlaubsplaner-c14e8",
+    storageBucket: "urlaubsplaner-c14e8.firebasestorage.app",
+    messagingSenderId: "440153496199",
+    appId: "1:440153496199:web:9f865535b50ec6de69f622"
+  };
+  /* ====================================== */
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
-    signInWithEmailAndPassword, signOut
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import {
-    getFirestore, collection, query, where, getDocs, doc, getDoc
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+  import { getFirestore, doc, getDoc, collection, query, where, getDocs }
+    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db   = getFirestore(app);
-  window.firebaseAuth = auth;  // falls DataSource später ein ID-Token braucht
+  window.firebaseAuth = auth;
 
   const $ = (s, r=document)=>r.querySelector(s);
   const login  = $('#login-screen');
@@ -213,7 +212,7 @@
   const msg    = $('#login-msg');
   const google = new GoogleAuthProvider();
 
-  // Admin-UI zeigen/verbergen + Admin-Code erst NACH Login laden
+  // Admin-UI zeigen/verbergen + Admin-Code erst nach Login laden
   function gate(open, user=null){
     if(open){
       login.hidden = true; appMain.hidden = false;
@@ -221,7 +220,7 @@
       if(!document.getElementById('admin-boot')){
         const s = document.createElement('script');
         s.id = 'admin-boot';
-        s.src = 'assets/js/admin.remote.js';   // Admin-Logik erst jetzt laden
+        s.src = 'assets/js/admin.remote.js';   // Admin-Logik jetzt laden
         document.body.appendChild(s);
       }
     }else{
@@ -230,44 +229,45 @@
     }
   }
 
-  // Whitelist-Check in Firestore (Sammlung "Whitelist", Felder: email, admin:true, status:"approved")
-async function isWhitelisted(user){
-    // 1) Versuch: Doc-ID = UID
+  // Whitelist-Check (A: Doc-ID = UID; B: Fallback per E-Mail)
+  async function isWhitelisted(user){
     try{
       const snap = await getDoc(doc(db, "Whitelist", user.uid));
       if (snap.exists()) {
         const d = snap.data();
         return d.admin === true && d.status === "approved";
       }
-    }catch(e){
-      console.warn("Whitelist per UID nicht lesbar:", e.message);
-    }
-
-    // 2) Fallback: Suche per E-Mail
+    }catch(e){ console.warn("Whitelist (UID) nicht lesbar:", e.message); }
     try{
-      const q = query(
-        collection(db,"Whitelist"),
-        where("email","==", user.email),
-        where("status","==","approved")
-      );
+      const q = query(collection(db,"Whitelist"),
+                      where("email","==", user.email),
+                      where("status","==","approved"));
       const r = await getDocs(q);
       if (r.empty) return false;
       return r.docs[0].data().admin === true;
     }catch(e){
       console.error("Whitelist-Query fehlgeschlagen:", e);
-      const m = document.getElementById("login-msg");
-      if (m) m.textContent = "Whitelist-Lesen nicht erlaubt. Prüfe Firestore-Regeln.";
+      if (msg) msg.textContent = "Whitelist-Lesen nicht erlaubt. Prüfe Firestore-Regeln.";
       return false;
     }
   }
+
+  // Auth-Status beobachten und Gate steuern
+  onAuthStateChanged(auth, async (user) => {
+    if(!user){ gate(false); return; }
+    const ok = await isWhitelisted(user);
+    if(ok) gate(true, user);
+    else { gate(false); if (msg) msg.textContent = "Kein Zugriff: Account nicht freigeschaltet."; }
+  });
+
   // Login/Logout
   $('#btn-google')?.addEventListener('click', async () => {
     try{ await signInWithPopup(auth, google); }
-    catch(e){ msg.textContent = e.message; }
+    catch(e){ if (msg) msg.textContent = e.message; }
   });
   $('#btn-logout')?.addEventListener('click', () => signOut(auth));
 
-  // Sicherheitsnetz gegen Indexierung
+  // Sicherheitsnetz gegen Indexierung (falls Head-Meta fehlt)
   if(!document.querySelector('meta[name="robots"]')){
     const m=document.createElement('meta'); m.name='robots'; m.content='noindex,nofollow'; document.head.appendChild(m);
   }
