@@ -199,15 +199,16 @@
     signInWithRedirect, getRedirectResult, signOut
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import {
-    getFirestore, doc, getDoc, collection, query, where, getDocs
+    getFirestore, doc, getDoc, collection, query, where, getDocs,
+    setDoc, deleteDoc, serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   // --- Initialisieren (muss vor isWhitelisted passieren!) ---
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db   = getFirestore(app);
-  window.firebaseAuth = auth;        // optional für Konsole
-  window.db = db;                    // optional fürs Debuggen
+  window.firebaseAuth = auth; // optional für Konsole
+  window.db = db;             // optional fürs Debuggen
 
   const $ = (s, r=document)=>r.querySelector(s);
   const login  = $('#login-screen');
@@ -220,31 +221,33 @@
     if(open){
       login.hidden = true; appMain.hidden = false;
       if(who && user) who.textContent = user.displayName || user.email;
+
+      // Admin-Logik erst nach Login laden
       if (!document.getElementById('admin-boot')) {
-  // 1) als Modul laden (falls admin.remote.js ESM verwendet)
-  const s = document.createElement('script');
-  s.id = 'admin-boot';
-  s.type = 'module';
-  s.src = 'assets/js/admin.remote.js';
-  s.onload  = () => console.log('[admin] boot (module) geladen');
-  s.onerror = () => {
-    console.warn('[admin] Modul-Load fehlgeschlagen – versuche Classic');
-    // 2) Fallback: klassisch laden
-    const s2 = document.createElement('script');
-    s2.id  = 'admin-boot-classic';
-    s2.src = 'assets/js/admin.remote.js';
-    s2.onload = () => console.log('[admin] boot (classic) geladen');
-    document.body.appendChild(s2);
-  };
-  document.body.appendChild(s);
-}
+        // 1) Modul versuchen
+        const s = document.createElement('script');
+        s.id = 'admin-boot';
+        s.type = 'module';
+        s.src = 'assets/js/admin.remote.js';
+        s.onload  = () => console.log('[admin] boot (module) geladen');
+        s.onerror = () => {
+          console.warn('[admin] Modul-Load fehlgeschlagen – versuche Classic');
+          // 2) Fallback: klassisch
+          const s2 = document.createElement('script');
+          s2.id  = 'admin-boot-classic';
+          s2.src = 'assets/js/admin.remote.js';
+          s2.onload = () => console.log('[admin] boot (classic) geladen');
+          document.body.appendChild(s2);
+        };
+        document.body.appendChild(s);
+      }
     }else{
       appMain.hidden = true; login.hidden = false;
       if(who) who.textContent = '';
     }
   }
 
-  // --- Whitelist: erst UID-Dok, dann E-Mail-Fallback (mit klaren Logs) ---
+  // --- Whitelist: erst UID-Dokument, dann E-Mail-Fallback ---
   async function isWhitelisted(user){
     const log = (...a)=>console.log("[WL]", ...a);
 
@@ -308,8 +311,16 @@
   // Logout
   $('#btn-logout')?.addEventListener('click', () => signOut(auth));
 
-  // Für die Konsole (Debug):
-  window.__fs = { collection, query, where, getDocs, doc, getDoc, db };
+  // Für admin.remote.js & Konsole verfügbar machen
+  window.__fs = {
+    db,
+    // Documents
+    doc, getDoc, setDoc, deleteDoc,
+    // Collections & Queries
+    collection, getDocs, query, where,
+    // Serverzeitstempel
+    serverTimestamp
+  };
 </script>
 
 <footer><div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div></footer>
