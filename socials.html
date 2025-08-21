@@ -6,15 +6,15 @@
   <title>CΛEL — Socials</title>
 
   <link rel="stylesheet" href="assets/css/styles.css">
-  <script src="assets/js/app.js"></script>
+  <script src="assets/js/app.js" defer></script>
 
   <!-- === Firestore-Lesen aktivieren (MUSS vor data-source.js stehen) === -->
   <script>
-    // Quelle: Firestore (Failsafe: beide Flags setzen, je nachdem was data-source.js nutzt)
-    window.__DS_MODE = 'fs';
+    // Datenquelle auf Firestore setzen (Fallback: beide Flags)
+    window.__DS_MODE   = 'fs';
     window.__DATA_MODE = 'fs';
 
-    // Deine Firebase-Konfiguration
+    // Firebase-Konfiguration (wie in admin.html)
     window.__firebaseConfig = {
       apiKey: "AIzaSyAXT3mrIMnR2owxFaJFIlfvtD94B99LIXw",
       authDomain: "urlaubsplaner-c14e8.firebaseapp.com",
@@ -24,6 +24,8 @@
       appId: "1:440153496199:web:9f865535b50ec6de69f622"
     };
   </script>
+
+  <!-- Firestore initialisieren und global bereitstellen -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import {
@@ -33,14 +35,15 @@
     const app = initializeApp(window.__firebaseConfig);
     const db  = getFirestore(app);
 
-    // Globale Hooks, die data-source.js / socials.js verwenden
+    // Für data-source.js / socials.js verfügbar machen
     window.db  = db;
     window.__fs = { collection, getDocs, query, where, doc, getDoc };
 
     console.log("[socials] Firestore Reader initialisiert");
   </script>
-  <!-- Datenquelle erst nach dem Firestore-Setup laden -->
-  <script src="assets/js/data-source.js"></script>
+
+  <!-- Datenquelle erst NACH Firestore-Setup laden -->
+  <script src="assets/js/data-source.js" defer></script>
 </head>
 <body>
 
@@ -67,8 +70,8 @@
   <h2>Socials</h2>
 
   <div class="tabs">
-    <!-- IDs & data-id jetzt exakt wie in Firestore -->
-    <button class="tab active"  data-id="instagram" onclick="setTab('instagram')">Instagram</button>
+    <!-- IDs / data-id müssen exakt den Firestore-Werten entsprechen -->
+    <button class="tab active" data-id="instagram" onclick="setTab('instagram')">Instagram</button>
     <button class="tab"        data-id="facebook"  onclick="setTab('facebook')">Facebook</button>
     <button class="tab"        data-id="x"         onclick="setTab('x')">X</button>
     <button class="tab"        data-id="tiktok"    onclick="setTab('tiktok')">TikTok</button>
@@ -77,10 +80,13 @@
   <!-- Startet mit Instagram -->
   <div id="feed" class="feed" data-platform="instagram"></div>
 
-  <script src="assets/js/socials.js"></script>
+  <!-- Feed-Renderer -->
+  <script src="assets/js/socials.js" defer></script>
   <script>
-    // Standard-Tab setzen
-    setTab('instagram');
+    // Standard-Tab setzen, wenn DOM fertig
+    document.addEventListener('DOMContentLoaded', () => {
+      setTab('instagram');
+    });
   </script>
 </main>
 
