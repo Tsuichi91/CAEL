@@ -6,18 +6,24 @@
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/app.js"></script>
   <style>
-    /* Downloads – kompakter Zusatz */
-    .dl-grid{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); }
-    .dl-item{ display:flex; flex-direction:column; }
-    .dl-thumb{ width:100%; aspect-ratio:4/3; border:1px solid var(--border); border-radius:12px;
-               background:linear-gradient(180deg,#0c0c10,#0a0a0a); display:grid; place-items:center; overflow:hidden; }
-    .dl-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+    /* Downloads – kompakt & konsistent */
+    .dl-grid{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); list-style:none; padding:0; margin:0 }
+    .dl-item{ display:flex; flex-direction:column }
+    .dl-thumb{ position:relative; width:100%; aspect-ratio:4/3; border:1px solid var(--border); border-radius:12px;
+               background:linear-gradient(180deg,#0c0c10,#0a0a0a); display:grid; place-items:center; overflow:hidden }
+    .dl-thumb img{ width:100%; height:100%; object-fit:cover; display:block }
+    .badge-type{ position:absolute; top:.5rem; right:.5rem; font-size:.75rem; padding:.2rem .45rem; border-radius:999px;
+                 border:1px solid var(--border); background:rgba(0,0,0,.45); backdrop-filter:blur(6px) }
     .dl-body{ margin-top:.6rem; display:flex; flex-direction:column; gap:.35rem }
     .dl-title{ font-weight:600 }
     .dl-meta{ color:var(--muted); font-size:.9rem }
     .dl-actions{ margin-top:.4rem; display:flex; gap:.4rem; flex-wrap:wrap }
-    .pdf-icon{ width:54px; height:54px; opacity:.9 }
     .section-head{ display:flex; align-items:center; justify-content:space-between; gap:.8rem; margin:.2rem 0 .6rem }
+
+    /* Era-Filter Tabs */
+    .filters{ display:flex; gap:.4rem; flex-wrap:wrap }
+    .filters .tab{ padding:.4rem .7rem; border:1px solid var(--border); border-radius:999px; background:var(--card); cursor:pointer }
+    .filters .tab.active{ background:var(--primary); border-color:transparent; color:#E7EBFF }
   </style>
 </head>
 <body>
@@ -47,7 +53,6 @@
   <section class="card">
     <div class="section-head">
       <h3 style="margin:0">CD-Booklets (PDF)</h3>
-      <!-- Optional: Sammelpaket -->
       <a class="btn" href="assets/downloads/booklets/ALL-BOOKLETS.zip" download>Alle als ZIP</a>
     </div>
     <ul id="grid-booklets" class="dl-grid"></ul>
@@ -59,6 +64,7 @@
       <h3 style="margin:0">Picture Cards</h3>
       <a class="btn" href="assets/downloads/picture-cards/ALL-PICTURE-CARDS.zip" download>Alle als ZIP</a>
     </div>
+    <div id="filters-pcards" class="filters" aria-label="Picture Cards filtern"></div>
     <ul id="grid-pcards" class="dl-grid"></ul>
   </section>
 
@@ -68,6 +74,7 @@
       <h3 style="margin:0">Posters</h3>
       <a class="btn" href="assets/downloads/posters/ALL-POSTERS.zip" download>Alle als ZIP</a>
     </div>
+    <div id="filters-posters" class="filters" aria-label="Poster filtern"></div>
     <ul id="grid-posters" class="dl-grid"></ul>
   </section>
 
@@ -95,71 +102,135 @@
 </footer>
 
 <script>
-  // kleine PDF-Icon-SVG (inline, damit kein Asset nötig ist)
-  const pdfSVG = `
-    <svg class="pdf-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3" y="2" width="14" height="20" rx="2" ry="2" stroke="#e34d4d"/>
-      <path d="M17 6h4v14a2 2 0 0 1-2 2h-2V6z" stroke="#e34d4d"/>
-      <path d="M6 14c3-2 5-6 6-10m0 0c0 4 2 7 6 8" stroke="#e34d4d"/>
-      <text x="6" y="20" fill="#e34d4d" font-size="6" font-family="Arial, sans-serif">PDF</text>
-    </svg>`;
+  // ---- Eras (Filter) ----------------------------------------------------
+  const ERAS = [
+    { id:'all',         label:'Alle' },
+    { id:'veins',       label:'VEINS' },
+    { id:'divide',      label:'D I V I D E' },
+    { id:'night-drive', label:'NIGHT DRIVE' },
+    { id:'halo-havoc',  label:'HALO // HAVOC' },
+    { id:'city-chords', label:'CITY CHORDS' }
+  ];
 
-  // ---- Daten (Platzhalter-Pfade gern ersetzen) --------------------------
+  // ---- Daten (Pfade beliebig anpassen) ---------------------------------
   const BOOKLETS = [
-    {title:'VEINS Booklet', file:'assets/downloads/booklets/veins-booklet.pdf', cover:'assets\covers\veins.png'},
-    {title:'D I V I D E Booklet', file:'assets/downloads/booklets/divide-booklet.pdf', cover:'assets/covers/divide.png'},
-    {title:'Night Drive Booklet', file:'assets/downloads/booklets/night-drive-booklet.pdf', cover:'assets/covers/night-drive.png'},
-    {title:'HALO // HAVOC Booklet', file:'assets/downloads/booklets/halo-havoc-booklet.pdf', cover:'assets/covers/halo-havoc.png'},
-    {title:'CITY CHORDS Booklet', file:'assets/downloads/booklets/city-chords-booklet.pdf', cover:'assets/covers/city-chords.png'}
+    {title:'VEINS Booklet',          file:'assets/downloads/booklets/veins-booklet.pdf',       cover:'assets/covers/veins.png'       , era:'veins'},
+    {title:'D I V I D E Booklet',    file:'assets/downloads/booklets/divide-booklet.pdf',      cover:'assets/covers/divide.png'      , era:'divide'},
+    {title:'NIGHT DRIVE Booklet',    file:'assets/downloads/booklets/night-drive-booklet.pdf', cover:'assets/covers/night-drive.png' , era:'night-drive'},
+    {title:'HALO // HAVOC Booklet',  file:'assets/downloads/booklets/halo-havoc-booklet.pdf',  cover:'assets/covers/halo-havoc.png'  , era:'halo-havoc'},
+    {title:'CITY CHORDS Booklet',    file:'assets/downloads/booklets/city-chords-booklet.pdf', cover:'assets/covers/city-chords.png' , era:'city-chords'}
   ];
+
   const PICTURES = [
-    {title:'Picture Card 01', file:'assets/downloads/picture-cards/pc-01.jpg', cover:'assets/downloads/picture-cards/pc-01.jpg'},
-    {title:'Picture Card 02', file:'assets/downloads/picture-cards/pc-02.jpg', cover:'assets/downloads/picture-cards/pc-02.jpg'},
-    {title:'Picture Card 03', file:'assets/downloads/picture-cards/pc-03.jpg', cover:'assets/downloads/picture-cards/pc-03.jpg'}
+    // VEINS
+    {title:'PC — VEINS 01', file:'assets/downloads/picture-cards/veins/pc-01.jpg',  cover:'assets/downloads/picture-cards/veins/pc-01.jpg', era:'veins'},
+    {title:'PC — VEINS 02', file:'assets/downloads/picture-cards/veins/pc-02.jpg',  cover:'assets/downloads/picture-cards/veins/pc-02.jpg', era:'veins'},
+    // DIVIDE
+    {title:'PC — DIVIDE 01', file:'assets/downloads/picture-cards/divide/pc-01.jpg', cover:'assets/downloads/picture-cards/divide/pc-01.jpg', era:'divide'},
+    {title:'PC — DIVIDE 02', file:'assets/downloads/picture-cards/divide/pc-02.jpg', cover:'assets/downloads/picture-cards/divide/pc-02.jpg', era:'divide'},
+    // NIGHT DRIVE
+    {title:'PC — NIGHT DRIVE 01', file:'assets/downloads/picture-cards/night-drive/pc-01.jpg', cover:'assets/downloads/picture-cards/night-drive/pc-01.jpg', era:'night-drive'},
+    // HALO // HAVOC
+    {title:'PC — HALO//HAVOC 01', file:'assets/downloads/picture-cards/halo-havoc/pc-01.jpg', cover:'assets/downloads/picture-cards/halo-havoc/pc-01.jpg', era:'halo-havoc'},
+    // CITY CHORDS
+    {title:'PC — CITY CHORDS 01', file:'assets/downloads/picture-cards/city-chords/pc-01.jpg', cover:'assets/downloads/picture-cards/city-chords/pc-01.jpg', era:'city-chords'}
   ];
+
   const POSTERS = [
-    {title:'Poster — VEINS', file:'assets/downloads/posters/poster-veins.jpg', cover:'assets/downloads/posters/poster-veins.jpg'},
-    {title:'Poster — HALO // HAVOC', file:'assets/downloads/posters/poster-halo-havoc.jpg', cover:'assets/downloads/posters/poster-halo-havoc.jpg'}
+    {title:'Poster — VEINS',         file:'assets/downloads/posters/veins/poster-01.jpg',        cover:'assets/downloads/posters/veins/poster-01.jpg',        era:'veins'},
+    {title:'Poster — DIVIDE',        file:'assets/downloads/posters/divide/poster-01.jpg',       cover:'assets/downloads/posters/divide/poster-01.jpg',       era:'divide'},
+    {title:'Poster — NIGHT DRIVE',   file:'assets/downloads/posters/night-drive/poster-01.jpg',  cover:'assets/downloads/posters/night-drive/poster-01.jpg',  era:'night-drive'},
+    {title:'Poster — HALO // HAVOC', file:'assets/downloads/posters/halo-havoc/poster-01.jpg',   cover:'assets/downloads/posters/halo-havoc/poster-01.jpg',   era:'halo-havoc'},
+    {title:'Poster — CITY CHORDS',   file:'assets/downloads/posters/city-chords/poster-01.jpg',  cover:'assets/downloads/posters/city-chords/poster-01.jpg',  era:'city-chords'}
   ];
+
   const PROFILES = [
     {title:'Profile Pic A', file:'assets/downloads/profile-pics/profile-a.jpg', cover:'assets/downloads/profile-pics/profile-a.jpg'},
     {title:'Profile Pic B', file:'assets/downloads/profile-pics/profile-b.jpg', cover:'assets/downloads/profile-pics/profile-b.jpg'}
   ];
+
   const LOGOS = [
-    {title:'Rose×Butterfly — PNG (light)', file:'assets/downloads/logo/logo-light.png', cover:'assets/downloads/logo/logo-light.png'},
+    {title:'Rose×Butterfly — PNG (light)', file:'assets/downloads/logo/logo-light.png',      cover:'assets/downloads/logo/logo-light.png'},
     {title:'Rose×Butterfly — PNG (dark)',  file:'assets/downloads/logo/cael-logo-dark.png',  cover:'assets/downloads/logo/cael-logo-dark.png'},
-    {title:'Rose×Butterfly — SVG (light)', file:'assets/downloads/logo/logo-light.svg', cover:'assets/downloads/logo/logo-light.svg'},
-    {title:'Rose×Butterfly — SVG (dark)',  file:'assets/downloads/logo/cael-logo-dark.svg',  cover:'assets/downloads/logo/cael-logo-dark.svg'},
+    {title:'Rose×Butterfly — SVG (light)', file:'assets/downloads/logo/logo-light.svg',      cover:'assets/downloads/logo/logo-light.svg'},
+    {title:'Rose×Butterfly — SVG (dark)',  file:'assets/downloads/logo/cael-logo-dark.svg',  cover:'assets/downloads/logo/cael-logo-dark.svg'}
   ];
 
-  // ---- Renderer ---------------------------------------------------------
-  function cardHTML(item, isPDF=false){
-    const thumb = isPDF
-      ? `<div class="dl-thumb">${pdfSVG}</div>`
-      : `<div class="dl-thumb">${ item.cover ? `<img src="${item.cover}" alt="">` : '' }</div>`;
-    const ext = (item.file.split('.').pop()||'').toUpperCase();
-    return `<li class="dl-item">
+  // ---- Helpers ----------------------------------------------------------
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const extOf = f => (f.split('.').pop() || '').toUpperCase();
+  const isPdf = f => /\.pdf(\?|#|$)/i.test(f);
+
+  function cardHTML(item){
+    const ext = extOf(item.file);
+    const thumb = `
+      <div class="dl-thumb">
+        ${item.cover ? `<img src="${esc(item.cover)}" alt="">` : ''}
+        <span class="badge-type">${esc(ext)}</span>
+      </div>`;
+    return `<li class="dl-item" data-era="${esc(item.era || '')}">
       ${thumb}
       <div class="dl-body">
-        <div class="dl-title">${item.title}</div>
-        <div class="dl-meta">${ext}</div>
+        <div class="dl-title">${esc(item.title)}</div>
+        <div class="dl-meta">${esc(ext)}${item.era ? ` • ${labelOfEra(item.era)}` : ''}</div>
         <div class="dl-actions">
-          <a class="btn" href="${item.file}" download>Download</a>
-          <a class="btn" href="${item.file}" target="_blank" rel="noopener">Öffnen</a>
+          <a class="btn" href="${esc(item.file)}" download>Download</a>
+          <a class="btn" href="${esc(item.file)}" target="_blank" rel="noopener">Öffnen</a>
         </div>
       </div>
     </li>`;
   }
-  function renderList(el, arr, opts={}){
-    el.innerHTML = arr.map(it => cardHTML(it, opts.pdf)).join('');
+
+  function renderList(el, arr){
+    el.innerHTML = arr.map(cardHTML).join('');
   }
 
+  function labelOfEra(id){
+    return (ERAS.find(e => e.id === id) || {}).label || '';
+  }
+
+  // Filter-UI erzeugen & binden
+  function buildFilters(container, onChange){
+    container.innerHTML = ERAS.map((e,i)=>
+      `<button class="tab${i===0?' active':''}" data-era="${e.id}">${e.label}</button>`
+    ).join('');
+    container.querySelectorAll('.tab').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        container.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active', b===btn));
+        onChange(btn.dataset.era);
+      });
+    });
+  }
+
+  function applyEraFilter(gridEl, eraId){
+    const all = Array.from(gridEl.children);
+    all.forEach(li=>{
+      const ok = eraId === 'all' || (li.dataset.era === eraId);
+      li.style.display = ok ? '' : 'none';
+    });
+  }
+
+  // ---- Boot -------------------------------------------------------------
   window.addEventListener('DOMContentLoaded', ()=>{
-    renderList(document.getElementById('grid-booklets'), BOOKLETS, {pdf:true});
-    renderList(document.getElementById('grid-pcards'),   PICTURES);
-    renderList(document.getElementById('grid-posters'),  POSTERS);
-    renderList(document.getElementById('grid-pp'),       PROFILES);
-    renderList(document.getElementById('grid-logos'),    LOGOS);
+    // Booklets (PDF: immer Cover anzeigen — kein generisches PDF-SVG)
+    renderList(document.getElementById('grid-booklets'), BOOKLETS);
+
+    // Picture Cards mit Filter
+    const gridPC = document.getElementById('grid-pcards');
+    renderList(gridPC, PICTURES);
+    buildFilters(document.getElementById('filters-pcards'), era => applyEraFilter(gridPC, era));
+    applyEraFilter(gridPC, 'all');
+
+    // Posters mit Filter
+    const gridPO = document.getElementById('grid-posters');
+    renderList(gridPO, POSTERS);
+    buildFilters(document.getElementById('filters-posters'), era => applyEraFilter(gridPO, era));
+    applyEraFilter(gridPO, 'all');
+
+    // Profile Pics & Logos (ohne Filter)
+    renderList(document.getElementById('grid-pp'),    PROFILES);
+    renderList(document.getElementById('grid-logos'), LOGOS);
+
     __applyTheme(); __markActive();
   });
 </script>
