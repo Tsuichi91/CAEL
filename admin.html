@@ -67,43 +67,50 @@
 
   <div id="tabviews">
     <!-- Instagram -->
-    <section id="tab-insta" hidden>
-      <div class="card">
-        <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">Instagram</span></h3>
-        <input type="hidden" id="f-id">
-        <div class="form-grid">
-          <div><label>Nutzername</label><input id="f-user" placeholder="@cael_official"></div>
-          <div><label>Avatar-URL</label><input id="f-avatar" placeholder="assets/avatar.png"></div>
-          <div><label>Bild/Video-URL</label><input id="f-img" placeholder="assets/covers/veins.png"></div>
-          <div class="full"><label>Text</label><textarea id="f-text" rows="3"></textarea></div>
-        </div>
-        <div class="bar">
-          <button class="btn" id="f-save">Speichern</button>
-          <button class="btn" id="f-export" type="button">Export</button>
-          <label class="btn"><input type="file" id="f-import" hidden>Import</label>
-        </div>
-      </div>
-      <h3 style="margin-top:1rem">Beiträge</h3>
-      <div id="list-insta" class="admin-list"></div>
-    </section>
+<section id="tab-insta" hidden>
+  <div class="card">
+    <h3>Neuer/zu bearbeitender Beitrag: <span data-js="f-platform">Instagram</span></h3>
+
+    <!-- Nur noch Daten-Attribut, keine globale ID -->
+    <input type="hidden" data-js="f-id">
+    <div class="form-grid">
+      <div><label>Nutzername</label><input data-js="f-user" placeholder="@cael_official"></div>
+      <div><label>Avatar-URL</label><input data-js="f-avatar" placeholder="assets/avatar.png"></div>
+      <div><label>Bild/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
+      <div class="full"><label>Text</label><textarea data-js="f-text" rows="3"></textarea></div>
+    </div>
+
+    <div class="bar">
+      <button class="btn" data-js="f-save">Speichern</button>
+      <button class="btn" data-js="f-export" type="button">Export</button>
+      <label class="btn"><input type="file" data-js="f-import" hidden>Import</label>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1rem">Beiträge</h3>
+  <div id="list-insta" class="admin-list"></div>
+</section>
 
     <!-- Facebook -->
     <section id="tab-fb" hidden>
       <div class="card">
         <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">Facebook</span></h3>
         <input type="hidden" id="f-id">
-        <div class="form-grid">
-          <div><label>Nutzername</label><input id="f-user" placeholder="@cael_official"></div>
-          <div><label>Avatar-URL</label><input id="f-avatar" placeholder="assets/avatar.png"></div>
-          <div><label>Bild/Video-URL</label><input id="f-img" placeholder="assets/covers/veins.png"></div>
-          <div class="full"><label>Text</label><textarea id="f-text" rows="3"></textarea></div>
-        </div>
-        <div class="bar">
-          <button class="btn" id="f-save">Speichern</button>
-          <button class="btn" id="f-export" type="button">Export</button>
-          <label class="btn"><input type="file" id="f-import" hidden>Import</label>
-        </div>
-      </div>
+       <input type="hidden" data-js="f-id">
+
+    <div class="form-grid">
+      <div><label>Nutzername</label><input data-js="f-user" placeholder="@cael_official"></div>
+      <div><label>Avatar-URL</label><input data-js="f-avatar" placeholder="assets/avatar.png"></div>
+      <div><label>Bild/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
+      <div class="full"><label>Text</label><textarea data-js="f-text" rows="3"></textarea></div>
+    </div>
+
+    <div class="bar">
+      <button class="btn" data-js="f-save">Speichern</button>
+      <button class="btn" data-js="f-export" type="button">Export</button>
+      <label class="btn"><input type="file" data-js="f-import" hidden>Import</label>
+    </div>
+  </div>
       <h3 style="margin-top:1rem">Beiträge</h3>
       <div id="list-fb" class="admin-list"></div>
     </section>
@@ -113,18 +120,21 @@
       <div class="card">
         <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">X</span></h3>
         <input type="hidden" id="f-id">
-        <div class="form-grid">
-          <div><label>Nutzername</label><input id="f-user" placeholder="@cael_official"></div>
-          <div><label>Avatar-URL</label><input id="f-avatar" placeholder="assets/avatar.png"></div>
-          <div><label>Bild/Video-URL</label><input id="f-img" placeholder="assets/covers/veins.png"></div>
-          <div class="full"><label>Text</label><textarea id="f-text" rows="3"></textarea></div>
-        </div>
-        <div class="bar">
-          <button class="btn" id="f-save">Speichern</button>
-          <button class="btn" id="f-export" type="button">Export</button>
-          <label class="btn"><input type="file" id="f-import" hidden>Import</label>
-        </div>
-      </div>
+        <input type="hidden" data-js="f-id">
+
+    <div class="form-grid">
+      <div><label>Nutzername</label><input data-js="f-user" placeholder="@cael_official"></div>
+      <div><label>Avatar-URL</label><input data-js="f-avatar" placeholder="assets/avatar.png"></div>
+      <div><label>Bild/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
+      <div class="full"><label>Text</label><textarea data-js="f-text" rows="3"></textarea></div>
+    </div>
+
+    <div class="bar">
+      <button class="btn" data-js="f-save">Speichern</button>
+      <button class="btn" data-js="f-export" type="button">Export</button>
+      <label class="btn"><input type="file" data-js="f-import" hidden>Import</label>
+    </div>
+  </div>
       <h3 style="margin-top:1rem">Beiträge</h3>
       <div id="list-x" class="admin-list"></div>
     </section>
@@ -133,51 +143,57 @@
     <section id="tab-tiktok" hidden>
       <div class="card">
         <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">TikTok</span></h3>
-        <input type="hidden" id="f-id">
-        <div class="form-grid">
-          <div><label>Nutzername</label><input id="f-user" placeholder="@cael_official"></div>
-          <div><label>Avatar-URL</label><input id="f-avatar" placeholder="assets/avatar.png"></div>
-          <div><label>Bild/Video-URL</label><input id="f-img" placeholder="assets/covers/veins.png"></div>
-          <div class="full"><label>Text</label><textarea id="f-text" rows="3"></textarea></div>
-        </div>
-        <div class="bar">
-          <button class="btn" id="f-save">Speichern</button>
-          <button class="btn" id="f-export" type="button">Export</button>
-          <label class="btn"><input type="file" id="f-import" hidden>Import</label>
-        </div>
-      </div>
+        <input type="hidden" data-js="f-id">
+
+    <div class="form-grid">
+      <div><label>Nutzername</label><input data-js="f-user" placeholder="@cael_official"></div>
+      <div><label>Avatar-URL</label><input data-js="f-avatar" placeholder="assets/avatar.png"></div>
+      <div><label>Bild/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
+      <div class="full"><label>Text</label><textarea data-js="f-text" rows="3"></textarea></div>
+    </div>
+
+    <div class="bar">
+      <button class="btn" data-js="f-save">Speichern</button>
+      <button class="btn" data-js="f-export" type="button">Export</button>
+      <label class="btn"><input type="file" data-js="f-import" hidden>Import</label>
+    </div>
+  </div>
       <h3 style="margin-top:1rem">Beiträge</h3>
       <div id="list-tiktok" class="admin-list"></div>
     </section>
 
     <!-- Timeline Events -->
     <section id="tab-events" hidden>
-      <div class="card">
-        <h3>Neues/zu bearbeitendes Event</h3>
-        <input type="hidden" id="e-id">
-        <div class="form-grid">
-          <div><label>Datum</label><input id="e-date" type="date" required></div>
-          <div><label>Titel</label><input id="e-title" required></div>
-          <div><label>Typ</label>
-            <select id="e-type">
-              <option>Milestone</option><option>Debut</option><option>Single</option>
-              <option>Mini</option><option>Album</option><option>MV</option>
-              <option>Event</option><option>Other</option>
-            </select>
-          </div>
-          <div><label>Bild-URL (optional)</label><input id="e-img"></div>
-          <div class="full"><label>Notiz</label><textarea id="e-note" rows="3"></textarea></div>
-        </div>
-        <div class="bar">
-          <button class="btn" id="e-save">Speichern</button>
-          <button class="btn" id="e-export" type="button">Export</button>
-          <label class="btn"><input type="file" id="e-import" hidden>Import</label>
-          <button class="btn danger" id="e-clear" type="button">Alle Custom-Events löschen</button>
-        </div>
+  <div class="card">
+    <h3>Neues/zu bearbeitendes Event</h3>
+
+    <input type="hidden" data-js="e-id">
+
+    <div class="form-grid">
+      <div><label>Datum</label><input data-js="e-date" type="date" required></div>
+      <div><label>Titel</label><input data-js="e-title" required></div>
+      <div><label>Typ</label>
+        <select data-js="e-type">
+          <option>Milestone</option><option>Debut</option><option>Single</option>
+          <option>Mini</option><option>Album</option><option>MV</option>
+          <option>Event</option><option>Other</option>
+        </select>
       </div>
-      <h3 style="margin-top:1rem">Custom-Events</h3>
-      <div id="list-events" class="admin-list"></div>
-    </section>
+      <div><label>Bild-URL (optional)</label><input data-js="e-img"></div>
+      <div class="full"><label>Notiz</label><textarea data-js="e-note" rows="3"></textarea></div>
+    </div>
+
+    <div class="bar">
+      <button class="btn" data-js="e-save">Speichern</button>
+      <button class="btn" data-js="e-export" type="button">Export</button>
+      <label class="btn"><input type="file" data-js="e-import" hidden>Import</label>
+      <button class="btn danger" data-js="e-clear" type="button">Alle Custom-Events löschen</button>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1rem">Custom-Events</h3>
+  <div id="list-events" class="admin-list"></div>
+</section>
   </div>
 </main>
 
