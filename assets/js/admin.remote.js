@@ -1,38 +1,337 @@
+/* Admin UI with Firestore storage */
+(function (global) {
+  'use strict';
 
-// assets/js/admin.remote.js
-(() => {
-  const SOCIAL={insta:{key:'instaPosts',title:'Instagram'},fb:{key:'fbPosts',title:'Facebook'},x:{key:'xPosts',title:'X'},tiktok:{key:'tiktokPosts',title:'TikTok'}};
-  const TL_KEY='cael.timeline.custom';
-  const $$=(s,r=document)=>Array.from(r.querySelectorAll(s)); const $=(s,r=document)=>r.querySelector(s);
-  const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
-  const DS=window.DataSource; async function aload(k){return DS?await DS.load(k):JSON.parse(localStorage.getItem(k)||'[]')} async function asave(k,v){return DS?await DS.save(k,v):localStorage.setItem(k,JSON.stringify(v))}
-  function migrate(list){(list||[]).forEach(it=>{if(!it.id) it.id=uid();}); return list||[]} function fmt(ts){const d=new Date(ts||Date.now()); return isNaN(+d)?'—':d.toLocaleString('de-DE')}
-  function initTabs(){ $$('#tabs .tab').forEach(btn=>{ btn.onclick=async()=>{ $$('#tabs .tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); const id=btn.dataset.id; $$('#tabviews > section').forEach(s=>s.hidden=(s.id!==id)); if(id==='tab-events') await renderEvents(); else await renderSocial(id.replace('tab-','')); }; }); }
-  async function renderSocial(platform){
-    const cfg=SOCIAL[platform]; const sec=document.getElementById('tab-'+platform); if(!sec) return;
-    const idEl=$('#f-id',sec), userEl=$('#f-user',sec), avatarEl=$('#f-avatar',sec), imgEl=$('#f-img',sec), textEl=$('#f-text',sec);
-    const saveBtn=$('#f-save',sec), exportBtn=$('#f-export',sec), importIn=$('#f-import',sec), label=$('#f-platform',sec), grid=document.getElementById('list-'+platform), status=$('#status',document);
-    if(label) label.textContent=cfg.title; idEl.value=''; userEl.value=''; avatarEl.value=''; imgEl.value=''; textEl.value=''; saveBtn.textContent='Speichern';
-    async function listData(){ const arr=migrate(await aload(cfg.key)); await asave(cfg.key,arr); return arr; }
-    async function draw(){ grid.innerHTML='<p class="meta">Lade…</p>'; const data=(await listData()).slice().sort((a,b)=>(a.time||0)-(b.time||0)).reverse(); grid.innerHTML=''; if(!data.length){ const p=document.createElement('p'); p.className='meta'; p.textContent='Keine Beiträge vorhanden.'; grid.appendChild(p); return; } data.forEach(item=>{ const card=document.createElement('article'); card.className='card admin-row'; card.innerHTML=`<div class="row-main"><img src="${item.img||'assets/avatar.png'}" class="thumb" alt=""><div class="meta-wrap"><div class="row-title">${item.user||'@user'} <span class="meta">• ${fmt(item.time)}</span></div><div class="row-text meta">${(item.text||'').slice(0,140)}</div></div></div><div class="row-actions"><button class="btn btn-sm edit">Bearbeiten</button><button class="btn btn-sm danger del">Löschen</button></div>`; card.querySelector('.edit').onclick=()=>{ idEl.value=item.id; userEl.value=item.user||''; avatarEl.value=item.avatar||''; imgEl.value=item.img||''; textEl.value=item.text||''; saveBtn.textContent='Änderungen speichern'; }; card.querySelector('.del').onclick=async()=>{ if(!confirm('Diesen Beitrag löschen?')) return; const base=(await aload(cfg.key)).filter(p=>p.id!==item.id); await asave(cfg.key,base); await draw(); }; grid.appendChild(card); }); if(status&&DS){ const c=DS.cfg(); status.textContent=`Speicher: ${c.mode==='github'?'GitHub JSON':'Browser (localStorage)'}`; } }
-    saveBtn.onclick=async()=>{ const obj={id:idEl.value||uid(),user:userEl.value||'@cael_official',avatar:avatarEl.value||'assets/avatar.png',img:imgEl.value||'',text:textEl.value||'',time:Date.now()}; let arr=await aload(cfg.key); const idx=arr.findIndex(p=>p.id===obj.id); if(idx>=0) arr[idx]=obj; else arr.push(obj); await asave(cfg.key,arr); idEl.value=''; userEl.value=''; avatarEl.value=''; imgEl.value=''; textEl.value=''; saveBtn.textContent='Speichern'; await draw(); };
-    exportBtn.onclick=async()=>{ const data=JSON.stringify(await aload(cfg.key),null,2); const blob=new Blob([data],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`${platform}-posts.json`; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); };
-    importIn.onchange=(e)=>{ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=async()=>{ try{ const incoming=migrate(JSON.parse(reader.result)); let base=await aload(cfg.key); const idxById=new Map(base.map((it,i)=>[it.id,i])); incoming.forEach(n=>{ if(!n.id) n.id=uid(); if(idxById.has(n.id)) base[idxById.get(n.id)]=n; else{ const comp=(n.user||'')+'|'+(n.text||'')+'|'+String(n.time||''); const j=base.findIndex(it=>((it.user||'')+'|'+(it.text||'')+'|'+String(it.time||''))===comp); if(j>=0) base[j]=n; else base.push(n); } }); await asave(cfg.key,base); await draw(); }catch(err){ alert('Import (Merge) fehlgeschlagen: '+err.message); } }; reader.readAsText(file); e.target.value=''; };
-    await draw();
+  // ---- FS bindings from admin.html ----
+  const FS = global.__fs || {};
+  const {
+    db, doc, getDoc, setDoc, deleteDoc,
+    collection, getDocs, query, where, serverTimestamp
+  } = FS;
+
+  if (!db || !collection) {
+    console.error('[admin] Firestore nicht initialisiert – prüfe admin.html __fs-Zuweisung.');
+    return;
   }
-  async function renderEvents(){
-    const sec=document.getElementById('tab-events'); const idEl=$('#e-id',sec), dateEl=$('#e-date',sec), titleEl=$('#e-title',sec), typeEl=$('#e-type',sec), imgEl=$('#e-img',sec), noteEl=$('#e-note',sec); const saveBtn=$('#e-save',sec), exportBtn=$('#e-export',sec), importIn=$('#e-import',sec), clearBtn=$('#e-clear',sec), grid=document.getElementById('list-events'), status=$('#status',document);
-    async function listData(){ const arr=migrate(await aload(TL_KEY)); arr.sort((a,b)=>a.date.localeCompare(b.date)); await asave(TL_KEY,arr); return arr; }
-    async function draw(){ grid.innerHTML='<p class="meta">Lade…</p>'; const data=(await listData()).slice().reverse(); grid.innerHTML=''; if(!data.length){ const p=document.createElement('p'); p.className='meta'; p.textContent='Noch keine Custom‑Events.'; grid.appendChild(p); return; } data.forEach(item=>{ const card=document.createElement('article'); card.className='card admin-row'; card.innerHTML=`<div class="row-main"><img src="${item.img||'assets/covers/veins.png'}" class="thumb" alt=""><div class="meta-wrap"><div class="row-title">${item.title} <span class="meta">• ${item.type} • ${item.date}</span></div><div class="row-text meta">${(item.note||'').slice(0,160)}</div></div></div><div class="row-actions"><button class="btn btn-sm edit">Bearbeiten</button><button class="btn btn-sm danger del">Löschen</button></div>`; card.querySelector('.edit').onclick=()=>{ idEl.value=item.id; dateEl.value=item.date; titleEl.value=item.title; typeEl.value=item.type||'Milestone'; imgEl.value=item.img||''; noteEl.value=item.note||''; saveBtn.textContent='Änderungen speichern'; }; card.querySelector('.del').onclick=async()=>{ if(!confirm('Dieses Event löschen?')) return; await asave(TL_KEY,(await aload(TL_KEY)).filter(p=>p.id!==item.id)); await draw(); }; grid.appendChild(card); }); if(status&&window.DataSource){ const c=window.DataSource.cfg(); status.textContent=`Speicher: ${c.mode==='github'?'GitHub JSON':'Browser (localStorage)'}`; } }
-    saveBtn.onclick=async()=>{ const obj={id:idEl.value||uid(),date:dateEl.value,title:titleEl.value.trim(),type:typeEl.value,img:imgEl.value.trim(),note:noteEl.value.trim()}; if(!obj.date||!obj.title){ alert('Datum & Titel sind Pflicht.'); return; } let arr=await aload(TL_KEY); const idx=arr.findIndex(e=>e.id===obj.id); if(idx>=0) arr[idx]=obj; else arr.push(obj); await asave(TL_KEY,arr); idEl.value=''; dateEl.value=''; titleEl.value=''; typeEl.value='Milestone'; imgEl.value=''; noteEl.value=''; saveBtn.textContent='Speichern'; await draw(); };
-    exportBtn.onclick=async()=>{ const data=JSON.stringify(await aload(TL_KEY),null,2); const blob=new Blob([data],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='timeline-custom.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); };
-    importIn.onchange=(e)=>{ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=async()=>{ try{ const incoming=JSON.parse(reader.result); let base=await aload(TL_KEY); const idxById=new Map(base.map((it,i)=>[it.id,i])); incoming.forEach(n=>{ if(!n.id) n.id=uid(); if(idxById.has(n.id)) base[idxById.get(n.id)]=n; else{ const comp=(n.title||'')+'|'+(n.date||'')+'|'+(n.type||''); const j=base.findIndex(it=>((it.title||'')+'|'+(it.date||'')+'|'+(it.type||''))===comp); if(j>=0) base[j]=n; else base.push(n); } }); await asave(TL_KEY,base); await draw(); }catch(err){ alert('Import (Merge) fehlgeschlagen: '+err.message); } }; reader.readAsText(file); e.target.value=''; };
-    clearBtn.onclick=async()=>{ if(confirm('Wirklich alle Custom‑Events löschen?')){ localStorage.removeItem(TL_KEY); await draw(); } };
-    await draw();
+
+  // ---- tiny DOM helpers ----
+  const $  = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+  const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+  const sanitize = s => (s||'').replace(/[<>&]/g, m=>({ '<':'&lt;','>':'&gt;','&':'&amp;' }[m]));
+
+  // Dedup event listeners helper
+  function bind(id, ev, fn){
+    const el = (typeof id === 'string') ? $('#'+id) : id;
+    if(!el) return;
+    const clone = el.cloneNode(true);
+    el.parentNode.replaceChild(clone, el);
+    clone.addEventListener(ev, fn);
+    return clone;
   }
-  window.addEventListener('DOMContentLoaded',async()=>{
+
+  const toast = (msg, ok=true)=>{
+    let t = $('#__toast');
+    if(!t){
+      t = document.createElement('div');
+      t.id='__toast';
+      t.style.cssText='position:fixed;right:12px;bottom:12px;padding:.6rem .9rem;border-radius:12px;background:'+(ok?'#1f3d2b':'#4b1b1b')+';color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:9999;transition:opacity .25s';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity='1';
+    setTimeout(()=>t.style.opacity='0', 2200);
+  };
+
+  // ---- Tabs ----
+  function initTabs(){
+    const tabs = $$('#tabs .tab');
+    const views= $$('#tabviews > section');
+    function show(id){
+      tabs.forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+      views.forEach(v=>v.hidden = v.id !== id);
+    }
+    tabs.forEach(b=> b.addEventListener('click', ()=> show(b.dataset.id)));
+    tabs[0]?.click();
+  }
+
+  // ---- Social posts ----
+  const TAB2PLATFORM = {
+    'tab-insta' : 'instagram',
+    'tab-fb'    : 'facebook',
+    'tab-x'     : 'x',
+    'tab-tiktok': 'tiktok'
+  };
+
+  function readPostForm(){
+    return {
+      id: $('#f-id').value || uid(),
+      user: $('#f-user').value.trim(),
+      avatar: $('#f-avatar').value.trim(),
+      img: $('#f-img').value.trim(),
+      text: $('#f-text').value.trim()
+    };
+  }
+  function fillPostForm(p){
+    $('#f-id').value     = p?.id || '';
+    $('#f-user').value   = p?.user || '';
+    $('#f-avatar').value = p?.avatar || '';
+    $('#f-img').value    = p?.img || '';
+    $('#f-text').value   = p?.text || '';
+  }
+
+  async function fetchPosts(platform){
+    const postsRef = collection(db, 'posts');
+    // Nur where – sortieren im Client -> keine Index-Anforderung
+    const snap = await getDocs(query(postsRef, where('platform','==', platform)));
+    const arr = snap.docs.map(d=> ({ id:d.id, ...d.data() }));
+    // sort by server ts (number) desc, fallback to client ts
+    arr.sort((a,b)=> (b.ts||0) - (a.ts||0));
+    return arr;
+  }
+
+  function renderPosts(listId, items, platform){
+    const box = $('#'+listId);
+    box.innerHTML = '';
+    if(!items.length){
+      box.innerHTML = '<div class="meta">Noch keine Beiträge.</div>';
+      return;
+    }
+    for(const p of items){
+      const row = document.createElement('div');
+      row.className='admin-row';
+      row.innerHTML = `
+        <div class="row-main">
+          <img class="thumb" src="${sanitize(p.img || p.avatar || 'assets/avatar.png')}" alt="">
+          <div>
+            <div class="row-title">${sanitize(p.user || '@user')} <small class="meta">#${sanitize((p.id||'').slice(-6))}</small></div>
+            <div class="row-text">${sanitize(p.text)}</div>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-sm" data-edit="${p.id}">Bearbeiten</button>
+          <button class="btn btn-sm danger" data-del="${p.id}">Löschen</button>
+        </div>
+      `;
+      box.appendChild(row);
+    }
+
+    // actions
+    box.querySelectorAll('[data-edit]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const pick = items.find(x=>x.id===b.dataset.edit);
+        fillPostForm(pick);
+        toast('Beitrag geladen');
+      });
+    });
+    box.querySelectorAll('[data-del]').forEach(b=>{
+      b.addEventListener('click', async ()=>{
+        await deleteDoc(doc(db,'posts', b.dataset.del));
+        toast('Beitrag gelöscht');
+        const again = await fetchPosts(platform);
+        renderPosts(listId, again, platform);
+      });
+    });
+  }
+
+  function bindSocialTab(tabId, listId){
+    const platform = TAB2PLATFORM[tabId];
+    const tabBtn   = $(`#tabs .tab[data-id="${tabId}"]`);
+    if(!platform || !tabBtn) return;
+
+    tabBtn.addEventListener('click', async ()=>{
+      $('#f-platform').textContent = ({
+        instagram:'Instagram', facebook:'Facebook', x:'X', tiktok:'TikTok'
+      })[platform];
+      fillPostForm(null);
+
+      const items = await fetchPosts(platform);
+      renderPosts(listId, items, platform);
+
+      // save
+      bind('f-save','click', async ()=>{
+        const p = readPostForm();
+        const data = {
+          user:p.user, avatar:p.avatar, img:p.img, text:p.text,
+          platform, ts: Date.now(), updatedAt: serverTimestamp()
+        };
+        await setDoc(doc(db,'posts', p.id), data, { merge:true });
+        toast('Gespeichert');
+        fillPostForm(null);
+        const again = await fetchPosts(platform);
+        renderPosts(listId, again, platform);
+      });
+
+      // export
+      bind('f-export','click', async ()=>{
+        const arr = await fetchPosts(platform);
+        const blob = new Blob([JSON.stringify(arr, null, 2)], {type:'application/json'});
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `posts_${platform}.json`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      });
+
+      // import
+      const fi = bind('f-import','change', async e=>{
+        const f = e.target.files[0]; if(!f) return;
+        try{
+          const arr = JSON.parse(await f.text());
+          if(!Array.isArray(arr)) throw new Error('Ungültiges JSON');
+          for(const p of arr){
+            const id = p.id || uid();
+            await setDoc(doc(db,'posts', id), {
+              user:p.user||'', avatar:p.avatar||'', img:p.img||'',
+              text:p.text||'', platform, ts:p.ts||Date.now(), updatedAt: serverTimestamp()
+            }, { merge:true });
+          }
+          toast('Import OK');
+          const again = await fetchPosts(platform);
+          renderPosts(listId, again, platform);
+        }catch(err){
+          console.error(err); toast('Import fehlgeschlagen', false);
+        }finally{ e.target.value=''; }
+      });
+    });
+  }
+
+  // ---- Timeline Events ----
+  function readEventForm(){
+    return {
+      id: $('#e-id').value || uid(),
+      date: $('#e-date').value,
+      title: $('#e-title').value.trim(),
+      type: $('#e-type').value,
+      img: $('#e-img').value.trim(),
+      note: $('#e-note').value.trim()
+    };
+  }
+  function fillEventForm(e){
+    $('#e-id').value    = e?.id || '';
+    $('#e-date').value  = e?.date || '';
+    $('#e-title').value = e?.title || '';
+    $('#e-type').value  = e?.type || 'Milestone';
+    $('#e-img').value   = e?.img || '';
+    $('#e-note').value  = e?.note || '';
+  }
+
+  async function fetchEvents(){
+    const snap = await getDocs(collection(db,'events'));
+    const arr = snap.docs.map(d=> ({ id:d.id, ...d.data() }));
+    arr.sort((a,b)=> (b.date||'').localeCompare(a.date||'') || (b.ts||0)-(a.ts||0));
+    return arr;
+  }
+
+  function renderEvents(items){
+    const box = $('#list-events'); box.innerHTML='';
+    if(!items.length){ box.innerHTML='<div class="meta">Noch keine Custom-Events.</div>'; return; }
+    for(const e of items){
+      const row = document.createElement('div');
+      row.className='admin-row';
+      row.innerHTML = `
+        <div class="row-main">
+          <img class="thumb" src="${sanitize(e.img || 'assets/photos/cael.png')}" alt="">
+          <div>
+            <div class="row-title">${sanitize(e.title)} <small class="meta">${sanitize(e.date||'')} • ${sanitize(e.type||'')}</small></div>
+            <div class="row-text">${sanitize(e.note||'')}</div>
+          </div>
+        </div>
+        <div>
+          <button class="btn btn-sm" data-edit="${e.id}">Bearbeiten</button>
+          <button class="btn btn-sm danger" data-del="${e.id}">Löschen</button>
+        </div>
+      `;
+      box.appendChild(row);
+    }
+    box.querySelectorAll('[data-edit]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        const pick = items.find(x=>x.id===b.dataset.edit);
+        fillEventForm(pick); toast('Event geladen');
+      });
+    });
+    box.querySelectorAll('[data-del]').forEach(b=>{
+      b.addEventListener('click', async ()=>{
+        await deleteDoc(doc(db,'events', b.dataset.del));
+        toast('Event gelöscht');
+        renderEvents(await fetchEvents());
+      });
+    });
+  }
+
+  function bindEvents(){
+    // Render beim Tab-Öffnen
+    $('#tabs .tab[data-id="tab-events"]')?.addEventListener('click', async ()=>{
+      fillEventForm(null);
+      renderEvents(await fetchEvents());
+    });
+
+    // Save
+    bind('e-save','click', async ()=>{
+      const e = readEventForm();
+      await setDoc(doc(db,'events', e.id), {
+        date:e.date, title:e.title, type:e.type, img:e.img, note:e.note,
+        ts: Date.now(), updatedAt: serverTimestamp()
+      }, { merge:true });
+      toast('Event gespeichert');
+      fillEventForm(null);
+      renderEvents(await fetchEvents());
+    });
+
+    // Export
+    bind('e-export','click', async ()=>{
+      const arr = await fetchEvents();
+      const blob = new Blob([JSON.stringify(arr, null, 2)], {type:'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'timeline_custom_events.json';
+      a.click(); URL.revokeObjectURL(a.href);
+    });
+
+    // Import
+    bind('e-import','change', async e=>{
+      const f = e.target.files[0]; if(!f) return;
+      try{
+        const arr = JSON.parse(await f.text());
+        if(!Array.isArray(arr)) throw new Error('Ungültiges JSON');
+        for(const it of arr){
+          const id = it.id || uid();
+          await setDoc(doc(db,'events', id), {
+            date: it.date || '', title: it.title||'', type: it.type||'Milestone',
+            img: it.img||'', note: it.note||'', ts: it.ts||Date.now(), updatedAt: serverTimestamp()
+          }, { merge:true });
+        }
+        toast('Import OK');
+        renderEvents(await fetchEvents());
+      }catch(err){
+        console.error(err); toast('Import fehlgeschlagen', false);
+      }finally{ e.target.value=''; }
+    });
+
+    // Clear (alle löschen)
+    bind('e-clear','click', async ()=>{
+      if(!confirm('Alle Custom-Events wirklich löschen?')) return;
+      const snap = await getDocs(collection(db,'events'));
+      for (const d of snap.docs){ await deleteDoc(doc(db,'events', d.id)); }
+      toast('Alle Custom-Events gelöscht');
+      renderEvents(await fetchEvents());
+    });
+  }
+
+  // ---- Init ----
+  function init(){
     initTabs();
-    (function(){ const map={insta:'tab-insta',fb:'tab-fb',x:'tab-x',tiktok:'tab-tiktok',events:'tab-events'}; const h=(location.hash||'').replace('#',''); const id=map[h]||'tab-insta'; const btn=Array.from(document.querySelectorAll('#tabs .tab')).find(b=>b.dataset.id===id)||document.querySelector('#tabs .tab'); btn&&btn.click(); })();
-    const y=document.getElementById('year'); if(y) y.append(new Date().getFullYear());
-  });
-})();
+    bindSocialTab('tab-insta',  'list-insta');
+    bindSocialTab('tab-fb',     'list-fb');
+    bindSocialTab('tab-x',      'list-x');
+    bindSocialTab('tab-tiktok', 'list-tiktok');
+    bindEvents();
+    console.log('[admin] Firestore-Admin init');
+  }
+
+  // autorun
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init, { once:true });
+  } else { init(); }
+
+})(window);
