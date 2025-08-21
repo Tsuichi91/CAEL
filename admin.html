@@ -199,8 +199,10 @@
     getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider,
     signInWithRedirect, getRedirectResult, signOut
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-  import { getFirestore, doc, getDoc }
-    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  import {
+    getFirestore, doc, getDoc,
+    collection, query, where, getDocs
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
   const app  = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -230,16 +232,28 @@
     }
   }
 
-  // --- Whitelist nur per UID-Dokument prüfen ---
+  // --- Whitelist-Check: zuerst UID-Dokument, danach Fallback via E-Mail ---
   async function isWhitelisted(user){
+    // 1) UID-Dokument
     try{
       const snap = await getDoc(doc(db, "Whitelist", user.uid));
-      if (!snap.exists()) return false;
-      const d = snap.data();
-      return d.admin === true; // optional später: && d.status === "approved"
+      if (snap.exists()) {
+        const d = snap.data();
+        return d.admin === true && (d.status ?? "approved") === "approved";
+      }
+    }catch{}
+
+    // 2) Fallback per E-Mail
+    try{
+      const q = query(
+        collection(db,"Whitelist"),
+        where("email","==", user.email),
+        where("status","==","approved")
+      );
+      const r = await getDocs(q);
+      return !r.empty && r.docs[0].data().admin === true;
     }catch(e){
-      console.error("Whitelist read failed:", e);
-      if (msg) msg.textContent = "Whitelist kann nicht gelesen werden. Prüfe Firestore-Regeln.";
+      console.error("Whitelist-Query:", e);
       return false;
     }
   }
@@ -251,9 +265,14 @@
   onAuthStateChanged(auth, async (user) => {
     console.log("Auth state:", user?.uid, user?.email);
     if(!user){ gate(false); return; }
-    const ok = await isWhitelisted(user);
-    if(ok) gate(true, user);
-    else { gate(false); if (msg) msg.textContent = "Kein Zugriff: Account nicht freigeschaltet."; }
+    try{
+      const ok = await isWhitelisted(user);
+      if(ok) gate(true, user);
+      else { gate(false); if (msg) msg.textContent = "Kein Zugriff: Account nicht freigeschaltet."; }
+    }catch(e){
+      gate(false);
+      if (msg) msg.textContent = "Whitelist kann nicht gelesen werden. Prüfe Firestore-Regeln.";
+    }
   });
 
   // --- Login-Button: Popup, bei Block → Redirect ---
@@ -262,7 +281,6 @@
     try{
       await signInWithPopup(auth, google);
     }catch(e){
-      // typische Blocker: auth/popup-blocked, auth/popup-closed-by-user
       console.warn("Popup-Login fehlgeschlagen, versuche Redirect:", e.code);
       try{ await signInWithRedirect(auth, google); }
       catch(err){ msg.textContent = err.message; }
@@ -278,7 +296,7 @@
   }
 
   // Console-Helfer zum Debuggen (optional)
-  window.__fs = { db, doc, getDoc };
+  window.__fs = { db, doc, getDoc, collection, query, where, getDocs };
 </script>
 
 <footer><div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div></footer>
