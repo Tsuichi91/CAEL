@@ -1,8 +1,8 @@
-/* Admin UI with Firestore storage */
+/* Admin UI with Firestore storage — data-js scoped */
 (function (global) {
   'use strict';
 
-  // ---- FS bindings from admin.html ----
+  // ---- Firestore bindings injected by admin.html ----
   const FS = global.__fs || {};
   const {
     db, doc, getDoc, setDoc, deleteDoc,
@@ -14,34 +14,23 @@
     return;
   }
 
-  // ---- tiny DOM helpers ----
+  // ---- tiny helpers ----
   const $  = (s, r=document) => r.querySelector(s);
   const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
   const uid = () => Math.random().toString(36).slice(2,10) + Date.now().toString(36);
   const sanitize = s => (s||'').replace(/[<>&]/g, m=>({ '<':'&lt;','>':'&gt;','&':'&amp;' }[m]));
 
-  // Dedup event listeners helper
-  function bind(id, ev, fn){
-    const el = (typeof id === 'string') ? $('#'+id) : id;
-    if(!el) return;
+  // Select per data-js inside a given root
+  const q = (root, key) => root.querySelector(`[data-js="${key}"]`);
+
+  // Dedupe event listeners
+  function bindElement(el, ev, fn){
+    if(!el) return el;
     const clone = el.cloneNode(true);
     el.parentNode.replaceChild(clone, el);
     clone.addEventListener(ev, fn);
     return clone;
   }
-
-  const toast = (msg, ok=true)=>{
-    let t = $('#__toast');
-    if(!t){
-      t = document.createElement('div');
-      t.id='__toast';
-      t.style.cssText='position:fixed;right:12px;bottom:12px;padding:.6rem .9rem;border-radius:12px;background:'+(ok?'#1f3d2b':'#4b1b1b')+';color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:9999;transition:opacity .25s';
-      document.body.appendChild(t);
-    }
-    t.textContent = msg;
-    t.style.opacity='1';
-    setTimeout(()=>t.style.opacity='0', 2200);
-  };
 
   // ---- Tabs ----
   function initTabs(){
@@ -49,43 +38,17 @@
     const views= $$('#tabviews > section');
     function show(id){
       tabs.forEach(b=>b.classList.toggle('active', b.dataset.id===id));
-      views.forEach(v=>v.hidden = v.id !== id);
+      views.forEach(v=> v.hidden = v.id !== id);
     }
     tabs.forEach(b=> b.addEventListener('click', ()=> show(b.dataset.id)));
     tabs[0]?.click();
   }
 
   // ---- Social posts ----
-  const TAB2PLATFORM = {
-    'tab-insta' : 'instagram',
-    'tab-fb'    : 'facebook',
-    'tab-x'     : 'x',
-    'tab-tiktok': 'tiktok'
-  };
-
-  function readPostForm(){
-    return {
-      id: $('#f-id').value || uid(),
-      user: $('#f-user').value.trim(),
-      avatar: $('#f-avatar').value.trim(),
-      img: $('#f-img').value.trim(),
-      text: $('#f-text').value.trim()
-    };
-  }
-  function fillPostForm(p){
-    $('#f-id').value     = p?.id || '';
-    $('#f-user').value   = p?.user || '';
-    $('#f-avatar').value = p?.avatar || '';
-    $('#f-img').value    = p?.img || '';
-    $('#f-text').value   = p?.text || '';
-  }
-
   async function fetchPosts(platform){
     const postsRef = collection(db, 'posts');
-    // Nur where – sortieren im Client -> keine Index-Anforderung
     const snap = await getDocs(query(postsRef, where('platform','==', platform)));
     const arr = snap.docs.map(d=> ({ id:d.id, ...d.data() }));
-    // sort by server ts (number) desc, fallback to client ts
     arr.sort((a,b)=> (b.ts||0) - (a.ts||0));
     return arr;
   }
@@ -105,7 +68,7 @@
           <img class="thumb" src="${sanitize(p.img || p.avatar || 'assets/avatar.png')}" alt="">
           <div>
             <div class="row-title">${sanitize(p.user || '@user')} <small class="meta">#${sanitize((p.id||'').slice(-6))}</small></div>
-            <div class="row-text">${sanitize(p.text)}</div>
+            <div class="row-text">${sanitize(p.text||'')}</div>
           </div>
         </div>
         <div>
@@ -115,55 +78,62 @@
       `;
       box.appendChild(row);
     }
-
-    // actions
-    box.querySelectorAll('[data-edit]').forEach(b=>{
-      b.addEventListener('click', ()=>{
-        const pick = items.find(x=>x.id===b.dataset.edit);
-        fillPostForm(pick);
-        toast('Beitrag geladen');
-      });
-    });
-    box.querySelectorAll('[data-del]').forEach(b=>{
-      b.addEventListener('click', async ()=>{
-        await deleteDoc(doc(db,'posts', b.dataset.del));
-        toast('Beitrag gelöscht');
-        const again = await fetchPosts(platform);
-        renderPosts(listId, again, platform);
-      });
-    });
   }
 
   function bindSocialTab(tabId, listId){
-    const platform = TAB2PLATFORM[tabId];
+    const PLATFORM = { 'tab-insta':'instagram', 'tab-fb':'facebook', 'tab-x':'x', 'tab-tiktok':'tiktok' };
+    const platform = PLATFORM[tabId];
     const tabBtn   = $(`#tabs .tab[data-id="${tabId}"]`);
-    if(!platform || !tabBtn) return;
+    const root     = document.getElementById(tabId);
+    if(!platform || !tabBtn || !root) return;
 
     tabBtn.addEventListener('click', async ()=>{
-      $('#f-platform').textContent = ({
-        instagram:'Instagram', facebook:'Facebook', x:'X', tiktok:'TikTok'
-      })[platform];
-      fillPostForm(null);
+      // Kopfzeile je Tab
+      const nice = { instagram:'Instagram', facebook:'Facebook', x:'X', tiktok:'TikTok' };
+      const fp = q(root, 'f-platform'); if (fp) fp.textContent = nice[platform];
 
+      // Formular leeren
+      fillPostForm(null, root);
+
+      // Liste laden/rendern
       const items = await fetchPosts(platform);
       renderPosts(listId, items, platform);
 
-      // save
-      bind('f-save','click', async ()=>{
-        const p = readPostForm();
+      // Aktionen (scoped)
+      const saveBtn   = q(root, 'f-save');
+      const exportBtn = q(root, 'f-export');
+      const importInp = q(root, 'f-import');
+
+      // Edit/Delete in der Liste: delegieren nach Render
+      const listBox = $('#'+listId);
+      listBox.querySelectorAll('[data-edit]').forEach(b=>{
+        b.addEventListener('click', ()=>{
+          const pick = items.find(x=>x.id===b.dataset.edit);
+          fillPostForm(pick, root);
+          toast('Beitrag geladen');
+        });
+      });
+      listBox.querySelectorAll('[data-del]').forEach(b=>{
+        b.addEventListener('click', async ()=>{
+          await deleteDoc(doc(db,'posts', b.dataset.del));
+          toast('Beitrag gelöscht');
+          renderPosts(listId, await fetchPosts(platform), platform);
+        });
+      });
+
+      bindElement(saveBtn, 'click', async ()=>{
+        const p = readPostForm(root);
         const data = {
           user:p.user, avatar:p.avatar, img:p.img, text:p.text,
           platform, ts: Date.now(), updatedAt: serverTimestamp()
         };
         await setDoc(doc(db,'posts', p.id), data, { merge:true });
         toast('Gespeichert');
-        fillPostForm(null);
-        const again = await fetchPosts(platform);
-        renderPosts(listId, again, platform);
+        fillPostForm(null, root);
+        renderPosts(listId, await fetchPosts(platform), platform);
       });
 
-      // export
-      bind('f-export','click', async ()=>{
+      bindElement(exportBtn, 'click', async ()=>{
         const arr = await fetchPosts(platform);
         const blob = new Blob([JSON.stringify(arr, null, 2)], {type:'application/json'});
         const a = document.createElement('a');
@@ -173,8 +143,7 @@
         URL.revokeObjectURL(a.href);
       });
 
-      // import
-      const fi = bind('f-import','change', async e=>{
+      bindElement(importInp, 'change', async (e)=>{
         const f = e.target.files[0]; if(!f) return;
         try{
           const arr = JSON.parse(await f.text());
@@ -187,8 +156,7 @@
             }, { merge:true });
           }
           toast('Import OK');
-          const again = await fetchPosts(platform);
-          renderPosts(listId, again, platform);
+          renderPosts(listId, await fetchPosts(platform), platform);
         }catch(err){
           console.error(err); toast('Import fehlgeschlagen', false);
         }finally{ e.target.value=''; }
@@ -196,29 +164,29 @@
     });
   }
 
-  // ---- Timeline Events ----
-  function readEventForm(){
+  function readPostForm(root){
     return {
-      id: $('#e-id').value || uid(),
-      date: $('#e-date').value,
-      title: $('#e-title').value.trim(),
-      type: $('#e-type').value,
-      img: $('#e-img').value.trim(),
-      note: $('#e-note').value.trim()
+      id:     q(root,'f-id').value || uid(),
+      user:   q(root,'f-user').value.trim(),
+      avatar: q(root,'f-avatar').value.trim(),
+      img:    q(root,'f-img').value.trim(),
+      text:   q(root,'f-text').value.trim(),
     };
   }
-  function fillEventForm(e){
-    $('#e-id').value    = e?.id || '';
-    $('#e-date').value  = e?.date || '';
-    $('#e-title').value = e?.title || '';
-    $('#e-type').value  = e?.type || 'Milestone';
-    $('#e-img').value   = e?.img || '';
-    $('#e-note').value  = e?.note || '';
+  function fillPostForm(p, root){
+    q(root,'f-id').value     = p?.id || '';
+    q(root,'f-user').value   = p?.user || '';
+    q(root,'f-avatar').value = p?.avatar || '';
+    q(root,'f-img').value    = p?.img || '';
+    q(root,'f-text').value   = p?.text || '';
   }
+
+  // ---- Timeline Events (scoped to #tab-events) ----
+  const eventsRoot = document.getElementById('tab-events');
 
   async function fetchEvents(){
     const snap = await getDocs(collection(db,'events'));
-    const arr = snap.docs.map(d=> ({ id:d.id, ...d.data() }));
+    const arr  = snap.docs.map(d=> ({ id:d.id, ...d.data() }));
     arr.sort((a,b)=> (b.date||'').localeCompare(a.date||'') || (b.ts||0)-(a.ts||0));
     return arr;
   }
@@ -244,6 +212,8 @@
       `;
       box.appendChild(row);
     }
+
+    // actions
     box.querySelectorAll('[data-edit]').forEach(b=>{
       b.addEventListener('click', ()=>{
         const pick = items.find(x=>x.id===b.dataset.edit);
@@ -259,6 +229,25 @@
     });
   }
 
+  function readEventForm(){
+    return {
+      id:    q(eventsRoot,'e-id').value || uid(),
+      date:  q(eventsRoot,'e-date').value,
+      title: q(eventsRoot,'e-title').value.trim(),
+      type:  q(eventsRoot,'e-type').value,
+      img:   q(eventsRoot,'e-img').value.trim(),
+      note:  q(eventsRoot,'e-note').value.trim(),
+    };
+  }
+  function fillEventForm(e){
+    q(eventsRoot,'e-id').value    = e?.id || '';
+    q(eventsRoot,'e-date').value  = e?.date || '';
+    q(eventsRoot,'e-title').value = e?.title || '';
+    q(eventsRoot,'e-type').value  = e?.type || 'Milestone';
+    q(eventsRoot,'e-img').value   = e?.img || '';
+    q(eventsRoot,'e-note').value  = e?.note || '';
+  }
+
   function bindEvents(){
     // Render beim Tab-Öffnen
     $('#tabs .tab[data-id="tab-events"]')?.addEventListener('click', async ()=>{
@@ -266,8 +255,7 @@
       renderEvents(await fetchEvents());
     });
 
-    // Save
-    bind('e-save','click', async ()=>{
+    bindElement(q(eventsRoot,'e-save'), 'click', async ()=>{
       const e = readEventForm();
       await setDoc(doc(db,'events', e.id), {
         date:e.date, title:e.title, type:e.type, img:e.img, note:e.note,
@@ -278,18 +266,17 @@
       renderEvents(await fetchEvents());
     });
 
-    // Export
-    bind('e-export','click', async ()=>{
+    bindElement(q(eventsRoot,'e-export'), 'click', async ()=>{
       const arr = await fetchEvents();
       const blob = new Blob([JSON.stringify(arr, null, 2)], {type:'application/json'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
       a.download = 'timeline_custom_events.json';
-      a.click(); URL.revokeObjectURL(a.href);
+      a.click();
+      URL.revokeObjectURL(a.href);
     });
 
-    // Import
-    bind('e-import','change', async e=>{
+    bindElement(q(eventsRoot,'e-import'), 'change', async e=>{
       const f = e.target.files[0]; if(!f) return;
       try{
         const arr = JSON.parse(await f.text());
@@ -308,14 +295,27 @@
       }finally{ e.target.value=''; }
     });
 
-    // Clear (alle löschen)
-    bind('e-clear','click', async ()=>{
+    bindElement(q(eventsRoot,'e-clear'), 'click', async ()=>{
       if(!confirm('Alle Custom-Events wirklich löschen?')) return;
       const snap = await getDocs(collection(db,'events'));
       for (const d of snap.docs){ await deleteDoc(doc(db,'events', d.id)); }
       toast('Alle Custom-Events gelöscht');
       renderEvents(await fetchEvents());
     });
+  }
+
+  // ---- Toast ----
+  function toast(msg, ok=true){
+    let t = $('#__toast');
+    if(!t){
+      t = document.createElement('div');
+      t.id='__toast';
+      t.style.cssText='position:fixed;right:12px;bottom:12px;padding:.6rem .9rem;border-radius:12px;background:'+(ok?'#1f3d2b':'#4b1b1b')+';color:#fff;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:9999;transition:opacity .25s';
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.opacity='1';
+    setTimeout(()=>t.style.opacity='0', 2200);
   }
 
   // ---- Init ----
@@ -326,10 +326,9 @@
     bindSocialTab('tab-x',      'list-x');
     bindSocialTab('tab-tiktok', 'list-tiktok');
     bindEvents();
-    console.log('[admin] Firestore-Admin init');
+    console.log('[admin] Firestore-Admin init (data-js scoped)');
   }
 
-  // autorun
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once:true });
   } else { init(); }
