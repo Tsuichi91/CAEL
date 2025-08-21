@@ -231,25 +231,35 @@
   }
 
   // Whitelist-Check in Firestore (Sammlung "Whitelist", Felder: email, admin:true, status:"approved")
-  async function isWhitelisted(user){
+async function isWhitelisted(user){
+    // 1) Versuch: Doc-ID = UID
     try{
-      // Wenn Doc-ID = UID ist, kannst du statt dessen getDoc(doc(db,"Whitelist",user.uid)) nutzen.
-      const q = query(collection(db,"Whitelist"),
-                      where("email","==", user.email),
-                      where("status","==","approved"));
+      const snap = await getDoc(doc(db, "Whitelist", user.uid));
+      if (snap.exists()) {
+        const d = snap.data();
+        return d.admin === true && d.status === "approved";
+      }
+    }catch(e){
+      console.warn("Whitelist per UID nicht lesbar:", e.message);
+    }
+
+    // 2) Fallback: Suche per E-Mail
+    try{
+      const q = query(
+        collection(db,"Whitelist"),
+        where("email","==", user.email),
+        where("status","==","approved")
+      );
       const r = await getDocs(q);
       if (r.empty) return false;
       return r.docs[0].data().admin === true;
-    }catch(e){ console.error(e); return false; }
+    }catch(e){
+      console.error("Whitelist-Query fehlgeschlagen:", e);
+      const m = document.getElementById("login-msg");
+      if (m) m.textContent = "Whitelist-Lesen nicht erlaubt. Prüfe Firestore-Regeln.";
+      return false;
+    }
   }
-
-  onAuthStateChanged(auth, async (user) => {
-    if(!user){ gate(false); return; }
-    const ok = await isWhitelisted(user);
-    if(ok) gate(true, user);
-    else { gate(false); msg.textContent = "Kein Zugriff: Account nicht freigeschaltet."; }
-  });
-
   // Login/Logout
   $('#btn-google')?.addEventListener('click', async () => {
     try{ await signInWithPopup(auth, google); }
