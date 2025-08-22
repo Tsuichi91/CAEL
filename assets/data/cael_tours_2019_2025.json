@@ -1,6 +1,6 @@
 {
   "evt-showcase-2020": {
-    "name": "Showcase Mini-Tour",
+    "name": "Showcase Mini-Tour (Year 1)",
     "window": {
       "start": "2020-03-03",
       "end": "2020-03-16"
@@ -11,36 +11,46 @@
         "stop_no": 1,
         "date": "2020-03-03",
         "city": "Seoul, KR",
-        "venue": "YES24 Live Hall"
+        "venue": "YES24 Live Hall",
+        "lat": 37.541,
+        "lon": 127.067
       },
       {
         "stop_no": 2,
         "date": "2020-03-07",
         "city": "Incheon, KR",
-        "venue": "Incheon Samsan World Gymnasium"
+        "venue": "Incheon Samsan World Gymnasium",
+        "lat": 37.506,
+        "lon": 126.737
       },
       {
         "stop_no": 3,
         "date": "2020-03-10",
         "city": "Daegu, KR",
-        "venue": "Daegu Concert House — Grand Hall"
+        "venue": "Daegu Concert House — Grand Hall",
+        "lat": 35.871,
+        "lon": 128.597
       },
       {
         "stop_no": 4,
         "date": "2020-03-13",
         "city": "Busan, KR",
-        "venue": "KBS Hall Busan"
+        "venue": "KBS Hall Busan",
+        "lat": 35.157,
+        "lon": 129.061
       },
       {
         "stop_no": 5,
         "date": "2020-03-16",
         "city": "Gwangju, KR",
-        "venue": "Kim Dae-jung Convention Center — Hall"
+        "venue": "Kim Dae-jung Convention Center — Hall",
+        "lat": 35.139,
+        "lon": 126.793
       }
     ]
   },
   "evt-asia-2020": {
-    "name": "Asia Tour #1",
+    "name": "Asia Tour #1 (10–15 Städte)",
     "window": {
       "start": "2020-09-01",
       "end": "2020-10-13"
@@ -51,84 +61,110 @@
         "stop_no": 1,
         "date": "2020-09-01",
         "city": "Seoul, KR",
-        "venue": "KSPO Dome"
+        "venue": "KSPO Dome",
+        "lat": 37.519,
+        "lon": 127.073
       },
       {
         "stop_no": 2,
         "date": "2020-09-05",
         "city": "Busan, KR",
-        "venue": "BEXCO Auditorium"
+        "venue": "BEXCO Auditorium",
+        "lat": 35.17,
+        "lon": 129.13
       },
       {
         "stop_no": 3,
         "date": "2020-09-08",
         "city": "Tokyo, JP",
-        "venue": "Ariake Arena"
+        "venue": "Ariake Arena",
+        "lat": 35.64,
+        "lon": 139.8
       },
       {
         "stop_no": 4,
         "date": "2020-09-12",
         "city": "Osaka, JP",
-        "venue": "Osaka-jō Hall"
+        "venue": "Osaka-jō Hall",
+        "lat": 34.688,
+        "lon": 135.525
       },
       {
         "stop_no": 5,
         "date": "2020-09-15",
         "city": "Nagoya, JP",
-        "venue": "Nippon Gaishi Hall"
+        "venue": "Nippon Gaishi Hall",
+        "lat": 35.09,
+        "lon": 136.939
       },
       {
         "stop_no": 6,
         "date": "2020-09-19",
         "city": "Taipei, TW",
-        "venue": "Taipei Arena"
+        "venue": "Taipei Arena",
+        "lat": 25.051,
+        "lon": 121.549
       },
       {
         "stop_no": 7,
         "date": "2020-09-22",
         "city": "Kaohsiung, TW",
-        "venue": "Kaohsiung Arena"
+        "venue": "Kaohsiung Arena",
+        "lat": 22.671,
+        "lon": 120.302
       },
       {
         "stop_no": 8,
         "date": "2020-09-26",
         "city": "Hong Kong, HK",
-        "venue": "AsiaWorld–Expo Arena"
+        "venue": "AsiaWorld–Expo Arena",
+        "lat": 22.322,
+        "lon": 113.942
       },
       {
         "stop_no": 9,
         "date": "2020-09-29",
         "city": "Bangkok, TH",
-        "venue": "Impact Arena, Muang Thong Thani"
+        "venue": "Impact Arena, Muang Thong Thani",
+        "lat": 13.914,
+        "lon": 100.549
       },
       {
         "stop_no": 10,
         "date": "2020-10-03",
         "city": "Singapore, SG",
-        "venue": "Singapore Indoor Stadium"
+        "venue": "Singapore Indoor Stadium",
+        "lat": 1.302,
+        "lon": 103.875
       },
       {
         "stop_no": 11,
         "date": "2020-10-06",
         "city": "Kuala Lumpur, MY",
-        "venue": "Axiata Arena"
+        "venue": "Axiata Arena",
+        "lat": 3.057,
+        "lon": 101.691
       },
       {
         "stop_no": 12,
         "date": "2020-10-10",
         "city": "Jakarta, ID",
-        "venue": "Istora Senayan"
+        "venue": "Istora Senayan",
+        "lat": -6.218,
+        "lon": 106.805
       },
       {
         "stop_no": 13,
         "date": "2020-10-13",
         "city": "Manila, PH",
-        "venue": "SM Mall of Asia Arena"
+        "venue": "SM Mall of Asia Arena",
+        "lat": 14.535,
+        "lon": 120.982
       }
     ]
   },
   "evt-world-2021": {
-    "name": "World Tour #1",
+    "name": "World Tour #1 (20–40 Shows)",
     "window": {
       "start": "2021-11-01",
       "end": "2021-12-27"
@@ -139,150 +175,198 @@
         "stop_no": 1,
         "date": "2021-11-01",
         "city": "Los Angeles, US",
-        "venue": "Kia Forum"
+        "venue": "Kia Forum",
+        "lat": 33.958,
+        "lon": -118.341
       },
       {
         "stop_no": 2,
         "date": "2021-11-04",
         "city": "San Francisco, US",
-        "venue": "Chase Center"
+        "venue": "Chase Center",
+        "lat": 37.768,
+        "lon": -122.387
       },
       {
         "stop_no": 3,
         "date": "2021-11-06",
         "city": "Seattle, US",
-        "venue": "Climate Pledge Arena"
+        "venue": "Climate Pledge Arena",
+        "lat": 47.622,
+        "lon": -122.354
       },
       {
         "stop_no": 4,
         "date": "2021-11-09",
         "city": "Vancouver, CA",
-        "venue": "Rogers Arena"
+        "venue": "Rogers Arena",
+        "lat": 49.277,
+        "lon": -123.108
       },
       {
         "stop_no": 5,
         "date": "2021-11-11",
         "city": "Toronto, CA",
-        "venue": "Scotiabank Arena"
+        "venue": "Scotiabank Arena",
+        "lat": 43.643,
+        "lon": -79.379
       },
       {
         "stop_no": 6,
         "date": "2021-11-14",
         "city": "New York, US",
-        "venue": "Madison Square Garden"
+        "venue": "Madison Square Garden",
+        "lat": 40.75,
+        "lon": -73.993
       },
       {
         "stop_no": 7,
         "date": "2021-11-16",
         "city": "Chicago, US",
-        "venue": "United Center"
+        "venue": "United Center",
+        "lat": 41.88,
+        "lon": -87.674
       },
       {
         "stop_no": 8,
         "date": "2021-11-19",
         "city": "Dallas, US",
-        "venue": "American Airlines Center"
+        "venue": "American Airlines Center",
+        "lat": 32.79,
+        "lon": -96.81
       },
       {
         "stop_no": 9,
         "date": "2021-11-21",
         "city": "Atlanta, US",
-        "venue": "State Farm Arena"
+        "venue": "State Farm Arena",
+        "lat": 33.757,
+        "lon": -84.396
       },
       {
         "stop_no": 10,
         "date": "2021-11-24",
         "city": "Miami, US",
-        "venue": "Kaseya Center"
+        "venue": "Kaseya Center",
+        "lat": 25.781,
+        "lon": -80.187
       },
       {
         "stop_no": 11,
         "date": "2021-11-26",
         "city": "Mexico City, MX",
-        "venue": "Arena Ciudad de México"
+        "venue": "Arena Ciudad de México",
+        "lat": 19.488,
+        "lon": -99.2
       },
       {
         "stop_no": 12,
         "date": "2021-11-29",
         "city": "São Paulo, BR",
-        "venue": "Ginásio do Ibirapuera"
+        "venue": "Ginásio do Ibirapuera",
+        "lat": -23.573,
+        "lon": -46.649
       },
       {
         "stop_no": 13,
         "date": "2021-12-01",
         "city": "Buenos Aires, AR",
-        "venue": "Movistar Arena"
+        "venue": "Movistar Arena",
+        "lat": -34.592,
+        "lon": -58.449
       },
       {
         "stop_no": 14,
         "date": "2021-12-04",
         "city": "Santiago, CL",
-        "venue": "Movistar Arena"
+        "venue": "Movistar Arena",
+        "lat": -33.462,
+        "lon": -70.642
       },
       {
         "stop_no": 15,
         "date": "2021-12-06",
         "city": "London, UK",
-        "venue": "The O2"
+        "venue": "The O2",
+        "lat": 51.503,
+        "lon": 0.003
       },
       {
         "stop_no": 16,
         "date": "2021-12-09",
         "city": "Paris, FR",
-        "venue": "Accor Arena"
+        "venue": "Accor Arena",
+        "lat": 48.838,
+        "lon": 2.378
       },
       {
         "stop_no": 17,
         "date": "2021-12-11",
         "city": "Amsterdam, NL",
-        "venue": "Ziggo Dome"
+        "venue": "Ziggo Dome",
+        "lat": 52.312,
+        "lon": 4.937
       },
       {
         "stop_no": 18,
         "date": "2021-12-14",
         "city": "Berlin, DE",
-        "venue": "Mercedes-Benz Arena"
+        "venue": "Mercedes-Benz Arena",
+        "lat": 52.505,
+        "lon": 13.443
       },
       {
         "stop_no": 19,
         "date": "2021-12-16",
         "city": "Cologne, DE",
-        "venue": "LANXESS arena"
+        "venue": "LANXESS arena",
+        "lat": 50.938,
+        "lon": 6.982
       },
       {
         "stop_no": 20,
         "date": "2021-12-19",
         "city": "Madrid, ES",
-        "venue": "WiZink Center"
+        "venue": "WiZink Center",
+        "lat": 40.425,
+        "lon": -3.671
       },
       {
         "stop_no": 21,
         "date": "2021-12-21",
         "city": "Barcelona, ES",
-        "venue": "Palau Sant Jordi"
+        "venue": "Palau Sant Jordi",
+        "lat": 41.363,
+        "lon": 2.154
       },
       {
         "stop_no": 22,
         "date": "2021-12-23",
         "city": "Milan, IT",
-        "venue": "Mediolanum Forum"
+        "venue": "Mediolanum Forum",
+        "lat": 45.403,
+        "lon": 9.157
       },
       {
         "stop_no": 23,
         "date": "2021-12-25",
         "city": "Zurich, CH",
-        "venue": "Hallenstadion"
+        "venue": "Hallenstadion",
+        "lat": 47.41,
+        "lon": 8.551
       },
       {
         "stop_no": 24,
         "date": "2021-12-27",
         "city": "Prague, CZ",
-        "venue": "O2 arena"
+        "venue": "O2 arena",
+        "lat": 50.105,
+        "lon": 14.492
       }
     ]
   },
   "evt-asia-2022": {
-    "name": "Asia Tour #2",
+    "name": "Asia Tour #2 (10–15 Städte)",
     "window": {
       "start": "2022-04-15",
       "end": "2022-05-27"
@@ -293,84 +377,110 @@
         "stop_no": 1,
         "date": "2022-04-15",
         "city": "Seoul, KR",
-        "venue": "Jamsil Indoor Stadium"
+        "venue": "Jamsil Indoor Stadium",
+        "lat": 37.515,
+        "lon": 127.073
       },
       {
         "stop_no": 2,
         "date": "2022-04-19",
         "city": "Fukuoka, JP",
-        "venue": "Marine Messe Fukuoka"
+        "venue": "Marine Messe Fukuoka",
+        "lat": 33.609,
+        "lon": 130.414
       },
       {
         "stop_no": 3,
         "date": "2022-04-22",
         "city": "Tokyo, JP",
-        "venue": "Yoyogi National Gymnasium"
+        "venue": "Yoyogi National Gymnasium",
+        "lat": 35.666,
+        "lon": 139.699
       },
       {
         "stop_no": 4,
         "date": "2022-04-26",
         "city": "Osaka, JP",
-        "venue": "Osaka-jō Hall"
+        "venue": "Osaka-jō Hall",
+        "lat": 34.688,
+        "lon": 135.525
       },
       {
         "stop_no": 5,
         "date": "2022-04-29",
         "city": "Nagoya, JP",
-        "venue": "Nippon Gaishi Hall"
+        "venue": "Nippon Gaishi Hall",
+        "lat": 35.09,
+        "lon": 136.939
       },
       {
         "stop_no": 6,
         "date": "2022-05-03",
         "city": "Taipei, TW",
-        "venue": "Taipei Arena"
+        "venue": "Taipei Arena",
+        "lat": 25.051,
+        "lon": 121.549
       },
       {
         "stop_no": 7,
         "date": "2022-05-06",
         "city": "Hong Kong, HK",
-        "venue": "AsiaWorld–Expo Arena"
+        "venue": "AsiaWorld–Expo Arena",
+        "lat": 22.322,
+        "lon": 113.942
       },
       {
         "stop_no": 8,
         "date": "2022-05-10",
         "city": "Bangkok, TH",
-        "venue": "Impact Arena"
+        "venue": "Impact Arena",
+        "lat": null,
+        "lon": null
       },
       {
         "stop_no": 9,
         "date": "2022-05-13",
         "city": "Singapore, SG",
-        "venue": "Singapore Indoor Stadium"
+        "venue": "Singapore Indoor Stadium",
+        "lat": 1.302,
+        "lon": 103.875
       },
       {
         "stop_no": 10,
         "date": "2022-05-17",
         "city": "Kuala Lumpur, MY",
-        "venue": "Axiata Arena"
+        "venue": "Axiata Arena",
+        "lat": 3.057,
+        "lon": 101.691
       },
       {
         "stop_no": 11,
         "date": "2022-05-20",
         "city": "Jakarta, ID",
-        "venue": "Istora Senayan"
+        "venue": "Istora Senayan",
+        "lat": -6.218,
+        "lon": 106.805
       },
       {
         "stop_no": 12,
         "date": "2022-05-24",
         "city": "Manila, PH",
-        "venue": "MOA Arena"
+        "venue": "MOA Arena",
+        "lat": null,
+        "lon": null
       },
       {
         "stop_no": 13,
         "date": "2022-05-27",
         "city": "Macau, MO",
-        "venue": "Cotai Arena"
+        "venue": "Cotai Arena",
+        "lat": 22.147,
+        "lon": 113.56
       }
     ]
   },
   "evt-world-2023": {
-    "name": "World Tour #2",
+    "name": "World Tour #2 (20–40 Shows)",
     "window": {
       "start": "2023-11-01",
       "end": "2023-12-27"
@@ -381,150 +491,198 @@
         "stop_no": 1,
         "date": "2023-11-01",
         "city": "Los Angeles, US",
-        "venue": "Kia Forum"
+        "venue": "Kia Forum",
+        "lat": 33.958,
+        "lon": -118.341
       },
       {
         "stop_no": 2,
         "date": "2023-11-04",
         "city": "San Francisco, US",
-        "venue": "Chase Center"
+        "venue": "Chase Center",
+        "lat": 37.768,
+        "lon": -122.387
       },
       {
         "stop_no": 3,
         "date": "2023-11-06",
         "city": "Seattle, US",
-        "venue": "Climate Pledge Arena"
+        "venue": "Climate Pledge Arena",
+        "lat": 47.622,
+        "lon": -122.354
       },
       {
         "stop_no": 4,
         "date": "2023-11-09",
         "city": "Vancouver, CA",
-        "venue": "Rogers Arena"
+        "venue": "Rogers Arena",
+        "lat": 49.277,
+        "lon": -123.108
       },
       {
         "stop_no": 5,
         "date": "2023-11-11",
         "city": "Toronto, CA",
-        "venue": "Scotiabank Arena"
+        "venue": "Scotiabank Arena",
+        "lat": 43.643,
+        "lon": -79.379
       },
       {
         "stop_no": 6,
         "date": "2023-11-14",
         "city": "New York, US",
-        "venue": "Madison Square Garden"
+        "venue": "Madison Square Garden",
+        "lat": 40.75,
+        "lon": -73.993
       },
       {
         "stop_no": 7,
         "date": "2023-11-16",
         "city": "Chicago, US",
-        "venue": "United Center"
+        "venue": "United Center",
+        "lat": 41.88,
+        "lon": -87.674
       },
       {
         "stop_no": 8,
         "date": "2023-11-19",
         "city": "Dallas, US",
-        "venue": "American Airlines Center"
+        "venue": "American Airlines Center",
+        "lat": 32.79,
+        "lon": -96.81
       },
       {
         "stop_no": 9,
         "date": "2023-11-21",
         "city": "Atlanta, US",
-        "venue": "State Farm Arena"
+        "venue": "State Farm Arena",
+        "lat": 33.757,
+        "lon": -84.396
       },
       {
         "stop_no": 10,
         "date": "2023-11-24",
         "city": "Miami, US",
-        "venue": "Kaseya Center"
+        "venue": "Kaseya Center",
+        "lat": 25.781,
+        "lon": -80.187
       },
       {
         "stop_no": 11,
         "date": "2023-11-26",
         "city": "Mexico City, MX",
-        "venue": "Arena Ciudad de México"
+        "venue": "Arena Ciudad de México",
+        "lat": 19.488,
+        "lon": -99.2
       },
       {
         "stop_no": 12,
         "date": "2023-11-29",
         "city": "São Paulo, BR",
-        "venue": "Ginásio do Ibirapuera"
+        "venue": "Ginásio do Ibirapuera",
+        "lat": -23.573,
+        "lon": -46.649
       },
       {
         "stop_no": 13,
         "date": "2023-12-01",
         "city": "Buenos Aires, AR",
-        "venue": "Movistar Arena"
+        "venue": "Movistar Arena",
+        "lat": -34.592,
+        "lon": -58.449
       },
       {
         "stop_no": 14,
         "date": "2023-12-04",
         "city": "Santiago, CL",
-        "venue": "Movistar Arena"
+        "venue": "Movistar Arena",
+        "lat": -33.462,
+        "lon": -70.642
       },
       {
         "stop_no": 15,
         "date": "2023-12-06",
         "city": "London, UK",
-        "venue": "The O2"
+        "venue": "The O2",
+        "lat": 51.503,
+        "lon": 0.003
       },
       {
         "stop_no": 16,
         "date": "2023-12-09",
         "city": "Paris, FR",
-        "venue": "Accor Arena"
+        "venue": "Accor Arena",
+        "lat": 48.838,
+        "lon": 2.378
       },
       {
         "stop_no": 17,
         "date": "2023-12-11",
         "city": "Amsterdam, NL",
-        "venue": "Ziggo Dome"
+        "venue": "Ziggo Dome",
+        "lat": 52.312,
+        "lon": 4.937
       },
       {
         "stop_no": 18,
         "date": "2023-12-14",
         "city": "Berlin, DE",
-        "venue": "Mercedes-Benz Arena"
+        "venue": "Mercedes-Benz Arena",
+        "lat": 52.505,
+        "lon": 13.443
       },
       {
         "stop_no": 19,
         "date": "2023-12-16",
         "city": "Cologne, DE",
-        "venue": "LANXESS arena"
+        "venue": "LANXESS arena",
+        "lat": 50.938,
+        "lon": 6.982
       },
       {
         "stop_no": 20,
         "date": "2023-12-19",
         "city": "Madrid, ES",
-        "venue": "WiZink Center"
+        "venue": "WiZink Center",
+        "lat": 40.425,
+        "lon": -3.671
       },
       {
         "stop_no": 21,
         "date": "2023-12-21",
         "city": "Barcelona, ES",
-        "venue": "Palau Sant Jordi"
+        "venue": "Palau Sant Jordi",
+        "lat": 41.363,
+        "lon": 2.154
       },
       {
         "stop_no": 22,
         "date": "2023-12-23",
         "city": "Milan, IT",
-        "venue": "Mediolanum Forum"
+        "venue": "Mediolanum Forum",
+        "lat": 45.403,
+        "lon": 9.157
       },
       {
         "stop_no": 23,
         "date": "2023-12-25",
         "city": "Zurich, CH",
-        "venue": "Hallenstadion"
+        "venue": "Hallenstadion",
+        "lat": 47.41,
+        "lon": 8.551
       },
       {
         "stop_no": 24,
         "date": "2023-12-27",
         "city": "Prague, CZ",
-        "venue": "O2 arena"
+        "venue": "O2 arena",
+        "lat": 50.105,
+        "lon": 14.492
       }
     ]
   },
   "evt-asia-2024": {
-    "name": "Asia Tour #3",
+    "name": "Asia Tour #3 (10–15 Städte)",
     "window": {
       "start": "2024-12-27",
       "end": "2025-02-07"
@@ -535,73 +693,97 @@
         "stop_no": 1,
         "date": "2024-12-27",
         "city": "Seoul, KR",
-        "venue": "KSPO Dome"
+        "venue": "KSPO Dome",
+        "lat": 37.519,
+        "lon": 127.073
       },
       {
         "stop_no": 2,
         "date": "2024-12-30",
         "city": "Busan, KR",
-        "venue": "BEXCO Auditorium"
+        "venue": "BEXCO Auditorium",
+        "lat": 35.17,
+        "lon": 129.13
       },
       {
         "stop_no": 3,
         "date": "2025-01-03",
         "city": "Tokyo, JP",
-        "venue": "Ariake Arena"
+        "venue": "Ariake Arena",
+        "lat": 35.64,
+        "lon": 139.8
       },
       {
         "stop_no": 4,
         "date": "2025-01-06",
         "city": "Osaka, JP",
-        "venue": "Osaka-jō Hall"
+        "venue": "Osaka-jō Hall",
+        "lat": 34.688,
+        "lon": 135.525
       },
       {
         "stop_no": 5,
         "date": "2025-01-09",
         "city": "Fukuoka, JP",
-        "venue": "Marine Messe Fukuoka"
+        "venue": "Marine Messe Fukuoka",
+        "lat": 33.609,
+        "lon": 130.414
       },
       {
         "stop_no": 6,
         "date": "2025-01-12",
         "city": "Taipei, TW",
-        "venue": "Taipei Arena"
+        "venue": "Taipei Arena",
+        "lat": 25.051,
+        "lon": 121.549
       },
       {
         "stop_no": 7,
         "date": "2025-01-15",
         "city": "Hong Kong, HK",
-        "venue": "AsiaWorld–Expo Arena"
+        "venue": "AsiaWorld–Expo Arena",
+        "lat": 22.322,
+        "lon": 113.942
       },
       {
         "stop_no": 8,
         "date": "2025-01-18",
         "city": "Bangkok, TH",
-        "venue": "Impact Arena"
+        "venue": "Impact Arena",
+        "lat": null,
+        "lon": null
       },
       {
         "stop_no": 9,
         "date": "2025-01-22",
         "city": "Singapore, SG",
-        "venue": "Singapore Indoor Stadium"
+        "venue": "Singapore Indoor Stadium",
+        "lat": 1.302,
+        "lon": 103.875
       },
       {
         "stop_no": 10,
         "date": "2025-01-26",
         "city": "Kuala Lumpur, MY",
-        "venue": "Axiata Arena"
+        "venue": "Axiata Arena",
+        "lat": 3.057,
+        "lon": 101.691
       },
       {
         "stop_no": 11,
         "date": "2025-01-30",
         "city": "Jakarta, ID",
-        "venue": "Istora Senayan"
+        "venue": "Istora Senayan",
+        "lat": -6.218,
+        "lon": 106.805
       },
       {
         "stop_no": 12,
         "date": "2025-02-07",
         "city": "Manila, PH",
-        "venue": "MOA Arena"
+        "venue": "MOA Arena",
+        "lat": null,
+        "lon": null
       }
     ]
   }

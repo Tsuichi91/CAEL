@@ -6,8 +6,12 @@
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/app.js"></script>
 
+  <!-- Leaflet (map library) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <style>
-    /* Tours – compact additions on top of your global styles */
+    /* Tours – compact additions */
     .tools{ display:grid; gap:.6rem; grid-template-columns:1fr auto; align-items:center; margin:.6rem 0 1rem }
     .tools .right{ display:flex; gap:.4rem; flex-wrap:wrap; justify-content:flex-end }
     .tools input,.tools select{
@@ -15,13 +19,22 @@
       background:var(--bg); color:var(--text)
     }
 
+    .map-wrap{ margin:.6rem 0 1rem }
+    #tourMap{
+      height: 420px;
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      overflow:hidden;
+      background:#0b0b10;
+    }
+
     .tour-grid{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)) }
     .tour-card.card{ display:flex; flex-direction:column }
     .tour-head{ display:flex; justify-content:space-between; align-items:center; gap:.6rem; flex-wrap:wrap }
     .tour-title{ margin:.2rem 0 }
     .kv{ font-family:"Megrim","Audiowide",system-ui; letter-spacing:.06em; font-size:.9rem; color:#C7D6FF }
-    .chip{ background: var(--chip, #555); color:#fff; border:1px solid var(--border); border-radius:999px; padding:.15rem .5rem; font-size:.8rem; box-shadow:var(--shadow); }
     .chips{ display:flex; gap:.35rem; flex-wrap:wrap }
+    .chip{ background: var(--chip, #555); color:#fff; border:1px solid var(--border); border-radius:999px; padding:.15rem .5rem; font-size:.8rem; box-shadow:var(--shadow); }
 
     details.stops{ margin-top:.6rem }
     details.stops summary{ cursor:pointer; list-style:none; }
@@ -32,6 +45,7 @@
     .stop .when{ color:var(--muted); min-width:7ch; font-variant-numeric:tabular-nums }
     .stop .city{ font-weight:600 }
     .stop .venue{ color:var(--muted) }
+    .highlight{ outline: 2px solid var(--primary); }
   </style>
 </head>
 <body>
@@ -69,9 +83,19 @@
       </select>
       <select id="year" aria-label="Filter by year">
         <option value="all">All years</option>
-        <!-- Years are injected by JS -->
+      </select>
+      <!-- NEW: view mode -->
+      <select id="viewMode" aria-label="View mode">
+        <option value="list">List only</option>
+        <option value="world">World map</option>
+        <option value="kr">South Korea map</option>
       </select>
     </div>
+  </div>
+
+  <!-- Map (shown when viewMode != list) -->
+  <div class="map-wrap" id="mapWrap" hidden>
+    <div id="tourMap" role="region" aria-label="Tour map"></div>
   </div>
 
   <div id="grid" class="tour-grid"></div>
