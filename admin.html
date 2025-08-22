@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow">
@@ -37,9 +37,9 @@
 <section id="login-screen" class="container" style="max-width:720px;margin:2rem auto 0">
   <article class="card">
     <h2>Admin-Login</h2>
-    <p class="meta">Melde dich mit deinem Account an.</p>
+    <p class="meta">Log Inn with your Account.</p>
     <div class="bar">
-      <button id="btn-google" class="btn">Mit Account anmelden</button>
+      <button id="btn-google" class="btn">Account Log In</button>
     </div>
     <div id="login-msg" class="meta" style="color:#f59f85"></div>
   </article>
@@ -51,11 +51,11 @@
     <h2 style="margin:0">Admin</h2>
     <div>
       <span id="whoami" class="meta"></span>
-      <button id="btn-logout" class="btn" style="margin-left:.5rem">Abmelden</button>
+      <button id="btn-logout" class="btn" style="margin-left:.5rem">Log Out</button>
     </div>
   </div>
 
-  <p class="meta">Beiträge & Timeline-Events verwalten. (Speicher-Modus stellst du oben in den Admin-Einstellungen ein.)</p>
+  <p class="meta">Manage posts and timeline events</p>
 
   <div id="tabs" class="tabs" role="tablist" style="margin-bottom:.6rem">
     <button class="tab" data-id="tab-insta">Instagram</button>
@@ -69,108 +69,108 @@
     <!-- Instagram -->
 <section id="tab-insta" hidden>
   <div class="card">
-    <h3>Neuer/zu bearbeitender Beitrag: <span data-js="f-platform">Instagram</span></h3>
+    <h3>New/to be edited post: <span data-js="f-platform">Instagram</span></h3>
 
     <!-- Nur noch Daten-Attribut, keine globale ID -->
     <input type="hidden" data-js="f-id">
     <div class="form-grid">
-      <div><label>Nutzername</label><input data-js="f-user" placeholder="@cael_official"></div>
+      <div><label>Username</label><input data-js="f-user" placeholder="@cael_official"></div>
       <div><label>Avatar-URL</label><input data-js="f-avatar" placeholder="assets/avatar.png"></div>
-      <div><label>Bild/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
+      <div><label>Picture/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
       <div class="full"><label>Text</label><textarea data-js="f-text" rows="3"></textarea></div>
     </div>
 
     <div class="bar">
-      <button class="btn" data-js="f-save">Speichern</button>
+      <button class="btn" data-js="f-save">Save</button>
       <button class="btn" data-js="f-export" type="button">Export</button>
       <label class="btn"><input type="file" data-js="f-import" hidden>Import</label>
     </div>
   </div>
 
-  <h3 style="margin-top:1rem">Beiträge</h3>
+  <h3 style="margin-top:1rem">Posts</h3>
   <div id="list-insta" class="admin-list"></div>
 </section>
 
     <!-- Facebook -->
     <section id="tab-fb" hidden>
       <div class="card">
-        <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">Facebook</span></h3>
+        <h3>New/to be edited post: <span id="f-platform">Facebook</span></h3>
         <input type="hidden" id="f-id">
        <input type="hidden" data-js="f-id">
 
     <div class="form-grid">
-      <div><label>Nutzername</label><input data-js="f-user" placeholder="@cael_official"></div>
+      <div><label>Username</label><input data-js="f-user" placeholder="@cael_official"></div>
       <div><label>Avatar-URL</label><input data-js="f-avatar" placeholder="assets/avatar.png"></div>
       <div><label>Bild/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
       <div class="full"><label>Text</label><textarea data-js="f-text" rows="3"></textarea></div>
     </div>
 
     <div class="bar">
-      <button class="btn" data-js="f-save">Speichern</button>
+      <button class="btn" data-js="f-save">Save</button>
       <button class="btn" data-js="f-export" type="button">Export</button>
       <label class="btn"><input type="file" data-js="f-import" hidden>Import</label>
     </div>
   </div>
-      <h3 style="margin-top:1rem">Beiträge</h3>
+      <h3 style="margin-top:1rem">Posts</h3>
       <div id="list-fb" class="admin-list"></div>
     </section>
 
     <!-- X -->
     <section id="tab-x" hidden>
       <div class="card">
-        <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">X</span></h3>
+        <h3>New/to be edited post: <span id="f-platform">X</span></h3>
         <input type="hidden" id="f-id">
         <input type="hidden" data-js="f-id">
 
     <div class="form-grid">
-      <div><label>Nutzername</label><input data-js="f-user" placeholder="@cael_official"></div>
+      <div><label>Username</label><input data-js="f-user" placeholder="@cael_official"></div>
       <div><label>Avatar-URL</label><input data-js="f-avatar" placeholder="assets/avatar.png"></div>
       <div><label>Bild/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
       <div class="full"><label>Text</label><textarea data-js="f-text" rows="3"></textarea></div>
     </div>
 
     <div class="bar">
-      <button class="btn" data-js="f-save">Speichern</button>
+      <button class="btn" data-js="f-save">Save</button>
       <button class="btn" data-js="f-export" type="button">Export</button>
       <label class="btn"><input type="file" data-js="f-import" hidden>Import</label>
     </div>
   </div>
-      <h3 style="margin-top:1rem">Beiträge</h3>
+      <h3 style="margin-top:1rem">Posts</h3>
       <div id="list-x" class="admin-list"></div>
     </section>
 
     <!-- TikTok -->
     <section id="tab-tiktok" hidden>
       <div class="card">
-        <h3>Neuer/zu bearbeitender Beitrag: <span id="f-platform">TikTok</span></h3>
+        <h3>New/to be edited post: <span id="f-platform">TikTok</span></h3>
         <input type="hidden" data-js="f-id">
 
     <div class="form-grid">
-      <div><label>Nutzername</label><input data-js="f-user" placeholder="@cael_official"></div>
+      <div><label>Username</label><input data-js="f-user" placeholder="@cael_official"></div>
       <div><label>Avatar-URL</label><input data-js="f-avatar" placeholder="assets/avatar.png"></div>
       <div><label>Bild/Video-URL</label><input data-js="f-img" placeholder="assets/covers/veins.png"></div>
       <div class="full"><label>Text</label><textarea data-js="f-text" rows="3"></textarea></div>
     </div>
 
     <div class="bar">
-      <button class="btn" data-js="f-save">Speichern</button>
+      <button class="btn" data-js="f-save">Save</button>
       <button class="btn" data-js="f-export" type="button">Export</button>
       <label class="btn"><input type="file" data-js="f-import" hidden>Import</label>
     </div>
   </div>
-      <h3 style="margin-top:1rem">Beiträge</h3>
+      <h3 style="margin-top:1rem">Posts</h3>
       <div id="list-tiktok" class="admin-list"></div>
     </section>
 
     <!-- Timeline Events -->
     <section id="tab-events" hidden>
   <div class="card">
-    <h3>Neues/zu bearbeitendes Event</h3>
+    <h3>New/to be edited event:</h3>
 
     <input type="hidden" data-js="e-id">
 
     <div class="form-grid">
-      <div><label>Datum</label><input data-js="e-date" type="date" required></div>
+      <div><label>Date</label><input data-js="e-date" type="date" required></div>
       <div><label>Titel</label><input data-js="e-title" required></div>
       <div><label>Typ</label>
         <select data-js="e-type">
@@ -179,15 +179,15 @@
           <option>Event</option><option>Other</option>
         </select>
       </div>
-      <div><label>Bild-URL (optional)</label><input data-js="e-img"></div>
-      <div class="full"><label>Notiz</label><textarea data-js="e-note" rows="3"></textarea></div>
+      <div><label>Picture-URL (optional)</label><input data-js="e-img"></div>
+      <div class="full"><label>Note</label><textarea data-js="e-note" rows="3"></textarea></div>
     </div>
 
     <div class="bar">
-      <button class="btn" data-js="e-save">Speichern</button>
+      <button class="btn" data-js="e-save">Save</button>
       <button class="btn" data-js="e-export" type="button">Export</button>
       <label class="btn"><input type="file" data-js="e-import" hidden>Import</label>
-      <button class="btn danger" data-js="e-clear" type="button">Alle Custom-Events löschen</button>
+      <button class="btn danger" data-js="e-clear" type="button">Delete all Custom-Events</button>
     </div>
   </div>
 

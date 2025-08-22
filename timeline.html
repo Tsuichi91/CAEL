@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CΛEL — Timeline (Kacheln)</title>
+  <title>CΛEL — Timeline</title>
 
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/app.js"></script>
@@ -65,7 +65,7 @@
 </header>
 
 <main class="container">
-  <h2>Timeline — Kacheln <small class="meta">( <span id="evCount">0</span> Events )</small></h2>
+  <h2>Timeline <small class="meta">( <span id="evCount">0</span> Events )</small></h2>
 
   <div class="toolbar card" style="margin-bottom:1rem; display:grid; gap:.6rem; grid-template-columns:1fr auto;">
     <input id="search" placeholder="Suche nach Titel, Typ, Datum …" aria-label="Suche">
@@ -73,11 +73,13 @@
       <div class="tabs" role="tablist" aria-label="Filter">
         <button class="tab active" data-type="all">Alle</button>
         <button class="tab" data-type="Milestone">Milestones</button>
-        <button class="tab" data-type="Debut">Debüt</button>
+        <button class="tab" data-type="Debut">Debut</button>
         <button class="tab" data-type="Single">Singles</button>
-        <button class="tab" data-type="Mini">Mini-Alben</button>
-        <button class="tab" data-type="Album">Alben</button>
+        <button class="tab" data-type="Mini"><Mini-Albums></Mini-Albums></button>
+        <button class="tab" data-type="Album">Albums</button>
         <button class="tab" data-type="MV">MV</button>
+        <button class="tab" data-type="Event">Events</button>
+        <button class="tab" data-type="Other">Others</button>
       </div>
     </div>
   </div>
@@ -91,7 +93,7 @@
       <div class="dlg-meta meta">—</div>
       <p class="dlg-note">—</p>
       <div style="text-align:right; margin-top:.6rem">
-        <button class="btn" id="dlgClose">Schließen</button>
+        <button class="btn" id="dlgClose">Close</button>
       </div>
     </div>
   </dialog>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CΛEL — Kontakt</title>
 <link rel="stylesheet" href="assets/css/styles.css">
 <script src="assets/js/app.js"></script>
@@ -27,20 +27,18 @@
 </header>
 <main class="container">
 
-<h2>Kontakt & Impressum</h2>
+<h2>Contact</h2>
 <div class="card">
-  <p><strong>Impressum (Platzhalter):</strong><br> Name/Anschrift/Email eintragen.</p>
   <p><strong>E‑Mail:</strong> <a href="mailto:contact@cael-official.example">contact@cael-official.example</a> (Platzhalter)</p>
 </div>
 <div class="card" style="margin-top:1rem">
-  <h3>Kontaktformular</h3>
+  <h3>Contact Form</h3>
   <form onsubmit="event.preventDefault(); window.location='mailto:contact@cael-official.example?subject=' + encodeURIComponent(document.getElementById('subject').value) + '&body=' + encodeURIComponent(document.getElementById('message').value + '\n\nVon: ' + document.getElementById('email').value);">
-    <label>Deine E‑Mail</label><input id="email" type="email" required placeholder="you@example.com">
-    <label>Betreff</label><input id="subject" required>
-    <label>Nachricht</label><textarea id="message" rows="6" required></textarea>
+    <label>Your E‑Mail</label><input id="email" type="email" required placeholder="you@example.com">
+    <label>Subject</label><input id="subject" required>
+    <label>Message</label><textarea id="message" rows="6" required></textarea>
     <button class="btn" type="submit">Senden</button>
   </form>
-  <p class="meta">Hinweis: Das Formular nutzt dein E‑Mail‑Programm (mailto), kein Server erforderlich.</p>
 </div>
 
 </main>
