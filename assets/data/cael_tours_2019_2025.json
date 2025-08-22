@@ -1,0 +1,610 @@
+{
+  "evt-showcase-2020": {
+    "name": "Showcase Mini-Tour (Year 1)",
+    "window": {
+      "start": "2020-03-03",
+      "end": "2020-03-16"
+    },
+    "count": 5,
+    "stops": [
+      {
+        "stop_no": 1,
+        "date": "2020-03-03",
+        "city": "Seoul, KR",
+        "venue": "YES24 Live Hall"
+      },
+      {
+        "stop_no": 2,
+        "date": "2020-03-07",
+        "city": "Incheon, KR",
+        "venue": "Incheon Samsan World Gymnasium"
+      },
+      {
+        "stop_no": 3,
+        "date": "2020-03-10",
+        "city": "Daegu, KR",
+        "venue": "Daegu Concert House — Grand Hall"
+      },
+      {
+        "stop_no": 4,
+        "date": "2020-03-13",
+        "city": "Busan, KR",
+        "venue": "KBS Hall Busan"
+      },
+      {
+        "stop_no": 5,
+        "date": "2020-03-16",
+        "city": "Gwangju, KR",
+        "venue": "Kim Dae-jung Convention Center — Hall"
+      }
+    ],
+    "notes": "5 Stops in 2 Wochen; nach Mini-Album 01 (2020-02-18)."
+  },
+  "evt-asia-2020": {
+    "name": "Asia Tour #1 (10–15 Städte)",
+    "window": {
+      "start": "2020-09-01",
+      "end": "2020-10-13"
+    },
+    "count": 13,
+    "stops": [
+      {
+        "stop_no": 1,
+        "date": "2020-09-01",
+        "city": "Seoul, KR",
+        "venue": "KSPO Dome"
+      },
+      {
+        "stop_no": 2,
+        "date": "2020-09-05",
+        "city": "Busan, KR",
+        "venue": "BEXCO Auditorium"
+      },
+      {
+        "stop_no": 3,
+        "date": "2020-09-08",
+        "city": "Tokyo, JP",
+        "venue": "Ariake Arena"
+      },
+      {
+        "stop_no": 4,
+        "date": "2020-09-12",
+        "city": "Osaka, JP",
+        "venue": "Osaka-jō Hall"
+      },
+      {
+        "stop_no": 5,
+        "date": "2020-09-15",
+        "city": "Nagoya, JP",
+        "venue": "Nippon Gaishi Hall"
+      },
+      {
+        "stop_no": 6,
+        "date": "2020-09-19",
+        "city": "Taipei, TW",
+        "venue": "Taipei Arena"
+      },
+      {
+        "stop_no": 7,
+        "date": "2020-09-22",
+        "city": "Kaohsiung, TW",
+        "venue": "Kaohsiung Arena"
+      },
+      {
+        "stop_no": 8,
+        "date": "2020-09-26",
+        "city": "Hong Kong, HK",
+        "venue": "AsiaWorld–Expo Arena"
+      },
+      {
+        "stop_no": 9,
+        "date": "2020-09-29",
+        "city": "Bangkok, TH",
+        "venue": "Impact Arena, Muang Thong Thani"
+      },
+      {
+        "stop_no": 10,
+        "date": "2020-10-03",
+        "city": "Singapore, SG",
+        "venue": "Singapore Indoor Stadium"
+      },
+      {
+        "stop_no": 11,
+        "date": "2020-10-06",
+        "city": "Kuala Lumpur, MY",
+        "venue": "Axiata Arena"
+      },
+      {
+        "stop_no": 12,
+        "date": "2020-10-10",
+        "city": "Jakarta, ID",
+        "venue": "Istora Senayan"
+      },
+      {
+        "stop_no": 13,
+        "date": "2020-10-13",
+        "city": "Manila, PH",
+        "venue": "SM Mall of Asia Arena"
+      }
+    ]
+  },
+  "evt-world-2021": {
+    "name": "World Tour #1 (20–40 Shows)",
+    "window": {
+      "start": "2021-11-01",
+      "end": "2021-12-27"
+    },
+    "count": 24,
+    "stops": [
+      {
+        "stop_no": 1,
+        "date": "2021-11-01",
+        "city": "Los Angeles, US",
+        "venue": "Kia Forum"
+      },
+      {
+        "stop_no": 2,
+        "date": "2021-11-04",
+        "city": "San Francisco, US",
+        "venue": "Chase Center"
+      },
+      {
+        "stop_no": 3,
+        "date": "2021-11-06",
+        "city": "Seattle, US",
+        "venue": "Climate Pledge Arena"
+      },
+      {
+        "stop_no": 4,
+        "date": "2021-11-09",
+        "city": "Vancouver, CA",
+        "venue": "Rogers Arena"
+      },
+      {
+        "stop_no": 5,
+        "date": "2021-11-11",
+        "city": "Toronto, CA",
+        "venue": "Scotiabank Arena"
+      },
+      {
+        "stop_no": 6,
+        "date": "2021-11-14",
+        "city": "New York, US",
+        "venue": "Madison Square Garden"
+      },
+      {
+        "stop_no": 7,
+        "date": "2021-11-16",
+        "city": "Chicago, US",
+        "venue": "United Center"
+      },
+      {
+        "stop_no": 8,
+        "date": "2021-11-19",
+        "city": "Dallas, US",
+        "venue": "American Airlines Center"
+      },
+      {
+        "stop_no": 9,
+        "date": "2021-11-21",
+        "city": "Atlanta, US",
+        "venue": "State Farm Arena"
+      },
+      {
+        "stop_no": 10,
+        "date": "2021-11-24",
+        "city": "Miami, US",
+        "venue": "Kaseya Center"
+      },
+      {
+        "stop_no": 11,
+        "date": "2021-11-26",
+        "city": "Mexico City, MX",
+        "venue": "Arena Ciudad de México"
+      },
+      {
+        "stop_no": 12,
+        "date": "2021-11-29",
+        "city": "São Paulo, BR",
+        "venue": "Ginásio do Ibirapuera"
+      },
+      {
+        "stop_no": 13,
+        "date": "2021-12-01",
+        "city": "Buenos Aires, AR",
+        "venue": "Movistar Arena"
+      },
+      {
+        "stop_no": 14,
+        "date": "2021-12-04",
+        "city": "Santiago, CL",
+        "venue": "Movistar Arena"
+      },
+      {
+        "stop_no": 15,
+        "date": "2021-12-06",
+        "city": "London, UK",
+        "venue": "The O2"
+      },
+      {
+        "stop_no": 16,
+        "date": "2021-12-09",
+        "city": "Paris, FR",
+        "venue": "Accor Arena"
+      },
+      {
+        "stop_no": 17,
+        "date": "2021-12-11",
+        "city": "Amsterdam, NL",
+        "venue": "Ziggo Dome"
+      },
+      {
+        "stop_no": 18,
+        "date": "2021-12-14",
+        "city": "Berlin, DE",
+        "venue": "Mercedes-Benz Arena"
+      },
+      {
+        "stop_no": 19,
+        "date": "2021-12-16",
+        "city": "Cologne, DE",
+        "venue": "LANXESS arena"
+      },
+      {
+        "stop_no": 20,
+        "date": "2021-12-19",
+        "city": "Madrid, ES",
+        "venue": "WiZink Center"
+      },
+      {
+        "stop_no": 21,
+        "date": "2021-12-21",
+        "city": "Barcelona, ES",
+        "venue": "Palau Sant Jordi"
+      },
+      {
+        "stop_no": 22,
+        "date": "2021-12-23",
+        "city": "Milan, IT",
+        "venue": "Mediolanum Forum"
+      },
+      {
+        "stop_no": 23,
+        "date": "2021-12-25",
+        "city": "Zurich, CH",
+        "venue": "Hallenstadion"
+      },
+      {
+        "stop_no": 24,
+        "date": "2021-12-27",
+        "city": "Prague, CZ",
+        "venue": "O2 arena"
+      }
+    ]
+  },
+  "evt-asia-2022": {
+    "name": "Asia Tour #2 (10–15 Städte)",
+    "window": {
+      "start": "2022-04-15",
+      "end": "2022-05-27"
+    },
+    "count": 13,
+    "stops": [
+      {
+        "stop_no": 1,
+        "date": "2022-04-15",
+        "city": "Seoul, KR",
+        "venue": "Jamsil Indoor Stadium"
+      },
+      {
+        "stop_no": 2,
+        "date": "2022-04-19",
+        "city": "Fukuoka, JP",
+        "venue": "Marine Messe Fukuoka"
+      },
+      {
+        "stop_no": 3,
+        "date": "2022-04-22",
+        "city": "Tokyo, JP",
+        "venue": "Yoyogi National Gymnasium"
+      },
+      {
+        "stop_no": 4,
+        "date": "2022-04-26",
+        "city": "Osaka, JP",
+        "venue": "Osaka-jō Hall"
+      },
+      {
+        "stop_no": 5,
+        "date": "2022-04-29",
+        "city": "Nagoya, JP",
+        "venue": "Nippon Gaishi Hall"
+      },
+      {
+        "stop_no": 6,
+        "date": "2022-05-03",
+        "city": "Taipei, TW",
+        "venue": "Taipei Arena"
+      },
+      {
+        "stop_no": 7,
+        "date": "2022-05-06",
+        "city": "Hong Kong, HK",
+        "venue": "AsiaWorld–Expo Arena"
+      },
+      {
+        "stop_no": 8,
+        "date": "2022-05-10",
+        "city": "Bangkok, TH",
+        "venue": "Impact Arena"
+      },
+      {
+        "stop_no": 9,
+        "date": "2022-05-13",
+        "city": "Singapore, SG",
+        "venue": "Singapore Indoor Stadium"
+      },
+      {
+        "stop_no": 10,
+        "date": "2022-05-17",
+        "city": "Kuala Lumpur, MY",
+        "venue": "Axiata Arena"
+      },
+      {
+        "stop_no": 11,
+        "date": "2022-05-20",
+        "city": "Jakarta, ID",
+        "venue": "Istora Senayan"
+      },
+      {
+        "stop_no": 12,
+        "date": "2022-05-24",
+        "city": "Manila, PH",
+        "venue": "MOA Arena"
+      },
+      {
+        "stop_no": 13,
+        "date": "2022-05-27",
+        "city": "Macau, MO",
+        "venue": "Cotai Arena"
+      }
+    ]
+  },
+  "evt-world-2023": {
+    "name": "World Tour #2 (20–40 Shows)",
+    "window": {
+      "start": "2023-11-01",
+      "end": "2023-12-27"
+    },
+    "count": 24,
+    "stops": [
+      {
+        "stop_no": 1,
+        "date": "2023-11-01",
+        "city": "Los Angeles, US",
+        "venue": "Kia Forum"
+      },
+      {
+        "stop_no": 2,
+        "date": "2023-11-04",
+        "city": "San Francisco, US",
+        "venue": "Chase Center"
+      },
+      {
+        "stop_no": 3,
+        "date": "2023-11-06",
+        "city": "Seattle, US",
+        "venue": "Climate Pledge Arena"
+      },
+      {
+        "stop_no": 4,
+        "date": "2023-11-09",
+        "city": "Vancouver, CA",
+        "venue": "Rogers Arena"
+      },
+      {
+        "stop_no": 5,
+        "date": "2023-11-11",
+        "city": "Toronto, CA",
+        "venue": "Scotiabank Arena"
+      },
+      {
+        "stop_no": 6,
+        "date": "2023-11-14",
+        "city": "New York, US",
+        "venue": "Madison Square Garden"
+      },
+      {
+        "stop_no": 7,
+        "date": "2023-11-16",
+        "city": "Chicago, US",
+        "venue": "United Center"
+      },
+      {
+        "stop_no": 8,
+        "date": "2023-11-19",
+        "city": "Dallas, US",
+        "venue": "American Airlines Center"
+      },
+      {
+        "stop_no": 9,
+        "date": "2023-11-21",
+        "city": "Atlanta, US",
+        "venue": "State Farm Arena"
+      },
+      {
+        "stop_no": 10,
+        "date": "2023-11-24",
+        "city": "Miami, US",
+        "venue": "Kaseya Center"
+      },
+      {
+        "stop_no": 11,
+        "date": "2023-11-26",
+        "city": "Mexico City, MX",
+        "venue": "Arena Ciudad de México"
+      },
+      {
+        "stop_no": 12,
+        "date": "2023-11-29",
+        "city": "São Paulo, BR",
+        "venue": "Ginásio do Ibirapuera"
+      },
+      {
+        "stop_no": 13,
+        "date": "2023-12-01",
+        "city": "Buenos Aires, AR",
+        "venue": "Movistar Arena"
+      },
+      {
+        "stop_no": 14,
+        "date": "2023-12-04",
+        "city": "Santiago, CL",
+        "venue": "Movistar Arena"
+      },
+      {
+        "stop_no": 15,
+        "date": "2023-12-06",
+        "city": "London, UK",
+        "venue": "The O2"
+      },
+      {
+        "stop_no": 16,
+        "date": "2023-12-09",
+        "city": "Paris, FR",
+        "venue": "Accor Arena"
+      },
+      {
+        "stop_no": 17,
+        "date": "2023-12-11",
+        "city": "Amsterdam, NL",
+        "venue": "Ziggo Dome"
+      },
+      {
+        "stop_no": 18,
+        "date": "2023-12-14",
+        "city": "Berlin, DE",
+        "venue": "Mercedes-Benz Arena"
+      },
+      {
+        "stop_no": 19,
+        "date": "2023-12-16",
+        "city": "Cologne, DE",
+        "venue": "LANXESS arena"
+      },
+      {
+        "stop_no": 20,
+        "date": "2023-12-19",
+        "city": "Madrid, ES",
+        "venue": "WiZink Center"
+      },
+      {
+        "stop_no": 21,
+        "date": "2023-12-21",
+        "city": "Barcelona, ES",
+        "venue": "Palau Sant Jordi"
+      },
+      {
+        "stop_no": 22,
+        "date": "2023-12-23",
+        "city": "Milan, IT",
+        "venue": "Mediolanum Forum"
+      },
+      {
+        "stop_no": 23,
+        "date": "2023-12-25",
+        "city": "Zurich, CH",
+        "venue": "Hallenstadion"
+      },
+      {
+        "stop_no": 24,
+        "date": "2023-12-27",
+        "city": "Prague, CZ",
+        "venue": "O2 arena"
+      }
+    ]
+  },
+  "evt-asia-2024": {
+    "name": "Asia Tour #3 (10–15 Städte)",
+    "window": {
+      "start": "2024-12-27",
+      "end": "2025-02-07"
+    },
+    "count": 12,
+    "stops": [
+      {
+        "stop_no": 1,
+        "date": "2024-12-27",
+        "city": "Seoul, KR",
+        "venue": "KSPO Dome"
+      },
+      {
+        "stop_no": 2,
+        "date": "2024-12-30",
+        "city": "Busan, KR",
+        "venue": "BEXCO Auditorium"
+      },
+      {
+        "stop_no": 3,
+        "date": "2025-01-03",
+        "city": "Tokyo, JP",
+        "venue": "Ariake Arena"
+      },
+      {
+        "stop_no": 4,
+        "date": "2025-01-06",
+        "city": "Osaka, JP",
+        "venue": "Osaka-jō Hall"
+      },
+      {
+        "stop_no": 5,
+        "date": "2025-01-09",
+        "city": "Fukuoka, JP",
+        "venue": "Marine Messe Fukuoka"
+      },
+      {
+        "stop_no": 6,
+        "date": "2025-01-12",
+        "city": "Taipei, TW",
+        "venue": "Taipei Arena"
+      },
+      {
+        "stop_no": 7,
+        "date": "2025-01-15",
+        "city": "Hong Kong, HK",
+        "venue": "AsiaWorld–Expo Arena"
+      },
+      {
+        "stop_no": 8,
+        "date": "2025-01-18",
+        "city": "Bangkok, TH",
+        "venue": "Impact Arena"
+      },
+      {
+        "stop_no": 9,
+        "date": "2025-01-22",
+        "city": "Singapore, SG",
+        "venue": "Singapore Indoor Stadium"
+      },
+      {
+        "stop_no": 10,
+        "date": "2025-01-26",
+        "city": "Kuala Lumpur, MY",
+        "venue": "Axiata Arena"
+      },
+      {
+        "stop_no": 11,
+        "date": "2025-01-30",
+        "city": "Jakarta, ID",
+        "venue": "Istora Senayan"
+      },
+      {
+        "stop_no": 12,
+        "date": "2025-02-07",
+        "city": "Manila, PH",
+        "venue": "MOA Arena"
+      }
+    ],
+    "notes": "A3 endet 2025-02-07; nächstmögliche World Tour wegen 1-Jahr-Abstand frühestens 2026-02-07."
+  }
+}

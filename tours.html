@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CΛEL — Showcases & Tours</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/app.js"></script>
+
+  <style>
+    /* Tours – compact additions on top of your global styles */
+    .tools{ display:grid; gap:.6rem; grid-template-columns:1fr auto; align-items:center; margin:.6rem 0 1rem }
+    .tools .right{ display:flex; gap:.4rem; flex-wrap:wrap; justify-content:flex-end }
+    .tools input,.tools select{
+      padding:.6rem .7rem; border:1px solid var(--border); border-radius:10px;
+      background:var(--bg); color:var(--text)
+    }
+
+    .tour-grid{ display:grid; gap:1rem; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)) }
+    .tour-card.card{ display:flex; flex-direction:column }
+    .tour-head{ display:flex; justify-content:space-between; align-items:center; gap:.6rem; flex-wrap:wrap }
+    .tour-title{ margin:.2rem 0 }
+    .kv{ font-family:"Megrim","Audiowide",system-ui; letter-spacing:.06em; font-size:.9rem; color:#C7D6FF }
+    .chip{ background: var(--chip, #555); color:#fff; border:1px solid var(--border); border-radius:999px; padding:.15rem .5rem; font-size:.8rem; box-shadow:var(--shadow); }
+    .chips{ display:flex; gap:.35rem; flex-wrap:wrap }
+
+    details.stops{ margin-top:.6rem }
+    details.stops summary{ cursor:pointer; list-style:none; }
+    details.stops summary::-webkit-details-marker{ display:none }
+    .stop-list{ margin:.5rem 0 0; padding:0; list-style:none; display:grid; gap:.35rem }
+    .stop{ display:flex; gap:.6rem; align-items:center; border:1px solid var(--border); border-radius:10px; padding:.4rem .6rem; background:var(--card) }
+    .stop .no{ width:2.2em; text-align:center; border:1px solid var(--border); border-radius:8px; padding:.15rem .25rem; color:#C7D6FF; font-variant-numeric:tabular-nums }
+    .stop .when{ color:var(--muted); min-width:7ch; font-variant-numeric:tabular-nums }
+    .stop .city{ font-weight:600 }
+    .stop .venue{ color:var(--muted) }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
+      <span class="brand-title letter-spin">CΛEL</span>
+    </div>
+    <nav class="navlinks" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="profile.html">Profile</a>
+      <a href="disco.html">Discography</a>
+      <a href="timeline.html">Timeline</a>
+      <a href="player.html">Music Player</a>
+      <a href="socials.html">Socials</a>
+      <a href="tours.html" class="active">Tours</a>
+      <a href="downloads.html">Downloads</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <h2>Showcases & Tours <small class="meta">( <span id="cnt">0</span> entries )</small></h2>
+
+  <div class="tools card">
+    <input id="q" placeholder="Search by name, city, venue…" aria-label="Search">
+    <div class="right">
+      <select id="type" aria-label="Filter by type">
+        <option value="all">All types</option>
+        <option value="Showcase">Showcase</option>
+        <option value="Asia Tour">Asia Tour</option>
+        <option value="World Tour">World Tour</option>
+      </select>
+      <select id="year" aria-label="Filter by year">
+        <option value="all">All years</option>
+        <!-- Years are injected by JS -->
+      </select>
+    </div>
+  </div>
+
+  <div id="grid" class="tour-grid"></div>
+</main>
+
+<footer>
+  <div class="container"><small>© <span id="yearFooter"></span> CΛEL — All Rights Reserved.</small></div>
+</footer>
+
+<script src="assets/js/tours.js"></script>
+<script>
+  document.getElementById('yearFooter').textContent = new Date().getFullYear();
+  __applyTheme(); __markActive();
+</script>
+</body>
+</html>
