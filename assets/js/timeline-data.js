@@ -1,7 +1,7 @@
 window.CAEL_TL_BASE = [
   {date:'2000-02-18', title:'Birth',                 type:'Milestone', note:'Born in Seoul, South Korea.'},
   {date:'2014-06-10', title:'Trainee Start',        type:'Milestone', note:'Started as a trainee'},
-  {date:'2019-08-04', title:'Debut as CΛEL',        type:'Debut',     note:'Artist Debut / Identity Reveal.'},
+  {date:'2019-08-04', title:'Debut as CΛEL',        type:'Debut',     note:'Artist Debut / Identity Reveal.', img: 'assets\debut-headshot.png'},
   {date:'2019-08-11', title:'VEINS — MV',           type:'MV',        note:'MV T-7 before debut single.'},
   {date:'2019-08-18', title:'VEINS',                type:'Single',    note:'Debut single.', img: 'assets\covers\veins.png'},
   {date:'2019-11-11', title:'Single 02 — MV',       type:'MV',        note:'MV T-7 before release.'},
