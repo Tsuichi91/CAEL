@@ -1,14 +1,77 @@
-
 window.CAEL_TL_BASE = [
-  {date:'2000-02-18', title:'Birth',            type:'Milestone', note:'Born in Seoul, South Korea.'},
-  {date:'2014-06-10', title:'Trainee Start',     type:'Milestone', note:'Started as a trainee'},
-  {date:'2019-08-04', title:'Debut as CΛEL',    type:'Debut',     note:'Artist Debut / Identity Reveal.'},
-  {date:'2019-08-18', title:'VEINS',             type:'Single',    note:'Debut‑Single.'},
-  {date:'2020-02-16', title:'D I V I D E',       type:'Mini',      note:'Birthday‑Week Comeback.'},
-  {date:'2021-10-18', title:'NIGHT DRIVE',       type:'Single',    note:'Neon Night.'},
-  {date:'2022-05-23', title:'ICON (Pre‑Release)',type:'Single',    note:'Vorab‑Single fürs Album.'},
-  {date:'2022-06-06', title:'PARADE (Pre‑MV)',   type:'MV',        note:'Teaser‑MV.'},
-  {date:'2022-06-13', title:'HALO // HAVOC',     type:'Album',     note:'Editorial Prism/Holo.'},
-  {date:'2023-02-01', title:'CITY CHORDS',       type:'Mini',      note:'City‑Pop‑Rock.'}
-  {date:'2023-06-10', title:'Asia Tour - HALO//HAVOC',       type:'Event',      note:'Start of the 1st Asia Tour'}
+  {date:'2000-02-18', title:'Birth',                 type:'Milestone', note:'Born in Seoul, South Korea.'},
+  {date:'2014-06-10', title:'Trainee Start',        type:'Milestone', note:'Started as a trainee'},
+  {date:'2019-08-04', title:'Debut as CΛEL',        type:'Debut',     note:'Artist Debut / Identity Reveal.'},
+
+  // 2019
+  {date:'2019-08-11', title:'VEINS — MV',           type:'MV',        note:'MV T-7 before debut single.'},
+  {date:'2019-08-18', title:'VEINS',                type:'Single',    note:'Debut single.'},
+  {date:'2019-11-11', title:'Single 02 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2019-11-18', title:'Single 02',            type:'Single',    note:'Comeback #1 (~3 months after debut).'},
+
+  // 2020
+  {date:'2020-02-11', title:'Mini-Album 01 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2020-02-18', title:'Mini-Album 01',        type:'Mini',      note:'Comeback #2 (~6 months after debut).'},
+  {date:'2020-03-03', title:'Showcase Mini-Tour',   type:'Event',     note:'Start of the Showcase Mini-Tour (runs through 2020-03-16).'},
+  {date:'2020-05-11', title:'Single 03 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2020-05-18', title:'Single 03',            type:'Single',    note:'~3 months after Mini-Album 01.'},
+  {date:'2020-08-11', title:'Mini-Album 02 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2020-08-18', title:'Mini-Album 02',        type:'Mini',      note:'~3 months after Single 03.'},
+  {date:'2020-09-01', title:'Asia Tour #1',         type:'Event',     note:'Start of the 1st Asia Tour (runs through 2020-10-13).'},
+  {date:'2020-12-11', title:'Single 04 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2020-12-18', title:'Single 04',            type:'Single',    note:'~4 months after Mini-Album 02.'},
+
+  // 2021
+  {date:'2021-04-11', title:'Mini-Album 03 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2021-04-18', title:'Mini-Album 03',        type:'Mini',      note:'~4 months after Single 04.'},
+  {date:'2021-08-11', title:'Studio Album 01 — MV', type:'MV',        note:'MV T-7 before album.'},
+  {date:'2021-08-18', title:'Studio Album 01',      type:'Album',     note:'First studio album (2 years after debut).'},
+  {date:'2021-09-22', title:'Repackage 01 — MV',    type:'MV',        note:'MV T-7 before repackage.'},
+  {date:'2021-09-29', title:'Repackage 01',         type:'Repackage', note:'~6 weeks after Studio Album 01.'},
+  {date:'2021-10-11', title:'Single 05 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2021-10-18', title:'Single 05',            type:'Single',    note:'~2 months after Studio Album 01.'},
+  {date:'2021-11-01', title:'World Tour #1',        type:'Event',     note:'Start of the 1st World Tour (runs through 2021-12-27).'},
+
+  // 2022
+  {date:'2022-02-11', title:'Mini-Album 04 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2022-02-18', title:'Mini-Album 04',        type:'Mini',      note:'~4 months after Single 05.'},
+  {date:'2022-04-15', title:'Asia Tour #2',         type:'Event',     note:'Start of the 2nd Asia Tour (runs through 2022-05-27).'},
+  {date:'2022-06-11', title:'Single 06 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2022-06-18', title:'Single 06',            type:'Single',    note:'~4 months after Mini-Album 04.'},
+  {date:'2022-09-11', title:'Mini-Album 05 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2022-09-18', title:'Mini-Album 05',        type:'Mini',      note:'~3 months after Single 06.'},
+  {date:'2022-12-11', title:'Single 07 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2022-12-18', title:'Single 07',            type:'Single',    note:'~3 months after Mini-Album 05.'},
+
+  // 2023
+  {date:'2023-04-11', title:'Mini-Album 06 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2023-04-18', title:'Mini-Album 06',        type:'Mini',      note:'~4 months after Single 07.'},
+  {date:'2023-08-11', title:'Studio Album 02 — MV', type:'MV',        note:'MV T-7 before album.'},
+  {date:'2023-08-18', title:'Studio Album 02',      type:'Album',     note:'Second studio album (2 years after Album 01).'},
+  {date:'2023-09-22', title:'Repackage 02 — MV',    type:'MV',        note:'MV T-7 before repackage.'},
+  {date:'2023-09-29', title:'Repackage 02',         type:'Repackage', note:'~6 weeks after Studio Album 02.'},
+  {date:'2023-11-01', title:'World Tour #2',        type:'Event',     note:'Start of the 2nd World Tour (runs through 2023-12-27).'},
+
+  // 2024
+  {date:'2024-01-11', title:'Single 08 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2024-01-18', title:'Single 08',            type:'Single',    note:'~5 months after Studio Album 02.'},
+  {date:'2024-04-11', title:'Mini-Album 07 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2024-04-18', title:'Mini-Album 07',        type:'Mini',      note:'~3 months after Single 08.'},
+  {date:'2024-08-11', title:'Mini-Album 08 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2024-08-18', title:'Mini-Album 08',        type:'Mini',      note:'~4 months after Mini-Album 07.'},
+  {date:'2024-11-11', title:'Single 09 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2024-11-18', title:'Single 09',            type:'Single',    note:'~3 months after Mini-Album 08.'},
+  {date:'2024-12-27', title:'Asia Tour #3',         type:'Event',     note:'Start of the 3rd Asia Tour (runs through 2025-02-07).'},
+
+  // 2025
+  {date:'2025-03-11', title:'Single 10 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2025-03-18', title:'Single 10',            type:'Single',    note:'~4 months after Single 09.'},
+  {date:'2025-06-11', title:'Mini-Album 09 — MV',   type:'MV',        note:'MV T-7 before release.'},
+  {date:'2025-06-18', title:'Mini-Album 09',        type:'Mini',      note:'~3 months after Single 10.'},
+  {date:'2025-08-11', title:'Studio Album 03 — MV', type:'MV',        note:'MV T-7 before album.'},
+  {date:'2025-08-18', title:'Studio Album 03',      type:'Album',     note:'Third studio album (2 years after Album 02).'},
+  {date:'2025-09-22', title:'Repackage 03 — MV',    type:'MV',        note:'MV T-7 before repackage.'},
+  {date:'2025-09-29', title:'Repackage 03',         type:'Repackage', note:'~6 weeks after Studio Album 03.'},
+  {date:'2025-10-11', title:'Single 11 — MV',       type:'MV',        note:'MV T-7 before release.'},
+  {date:'2025-10-18', title:'Single 11',            type:'Single',    note:'~2 months after Studio Album 03.'}
 ];
