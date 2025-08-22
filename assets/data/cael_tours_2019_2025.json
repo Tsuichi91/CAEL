@@ -1,6 +1,6 @@
 {
   "evt-showcase-2020": {
-    "name": "Showcase Mini-Tour (Year 1)",
+    "name": "Showcase Mini-Tour",
     "window": {
       "start": "2020-03-03",
       "end": "2020-03-16"
@@ -37,11 +37,10 @@
         "city": "Gwangju, KR",
         "venue": "Kim Dae-jung Convention Center — Hall"
       }
-    ],
-    "notes": "5 Stops in 2 Wochen; nach Mini-Album 01 (2020-02-18)."
+    ]
   },
   "evt-asia-2020": {
-    "name": "Asia Tour #1 (10–15 Städte)",
+    "name": "Asia Tour #1",
     "window": {
       "start": "2020-09-01",
       "end": "2020-10-13"
@@ -129,7 +128,7 @@
     ]
   },
   "evt-world-2021": {
-    "name": "World Tour #1 (20–40 Shows)",
+    "name": "World Tour #1",
     "window": {
       "start": "2021-11-01",
       "end": "2021-12-27"
@@ -283,7 +282,7 @@
     ]
   },
   "evt-asia-2022": {
-    "name": "Asia Tour #2 (10–15 Städte)",
+    "name": "Asia Tour #2",
     "window": {
       "start": "2022-04-15",
       "end": "2022-05-27"
@@ -371,7 +370,7 @@
     ]
   },
   "evt-world-2023": {
-    "name": "World Tour #2 (20–40 Shows)",
+    "name": "World Tour #2",
     "window": {
       "start": "2023-11-01",
       "end": "2023-12-27"
@@ -525,7 +524,7 @@
     ]
   },
   "evt-asia-2024": {
-    "name": "Asia Tour #3 (10–15 Städte)",
+    "name": "Asia Tour #3",
     "window": {
       "start": "2024-12-27",
       "end": "2025-02-07"
@@ -604,7 +603,6 @@
         "city": "Manila, PH",
         "venue": "MOA Arena"
       }
-    ],
-    "notes": "A3 endet 2025-02-07; nächstmögliche World Tour wegen 1-Jahr-Abstand frühestens 2026-02-07."
+    ]
   }
 }
