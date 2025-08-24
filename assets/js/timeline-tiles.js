@@ -35,7 +35,7 @@
   function chipColor(t){
     const map = {
       Milestone:'#6b7280', Debut:'#22d3ee',
-      Single:'#60a5fa', Mini:'#f472b6', Album:'#a78bfa', Repackage:'#7e56f9ff', MV:'#34d399',
+      Single:'#60a5fa', Mini:'#f472b6', Album:'#a78bfa', Repackaged:'#7e56f9ff', MV:'#34d399',
       Event:'#f59e0b', Other:'#94a3b8'
     };
 
