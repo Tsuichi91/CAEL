@@ -1,26 +1,26 @@
 
 const LIBRARY = {
   singles: [
-    { title:'VEINS', date:'2023-08-18', cover:'assets/covers/veins.png', tracks:[
+    { title:'VEINS', date:'2019-08-18', cover:'assets/covers/veins.png', tracks:[
       { title:'Veins', src:'assets/audio/singles/veins/veins.mp3' },
       { title:'Grey Room', src:'assets/audio/singles/veins/grey-room.mp3' },
       { title:'Butterfly Dust', src:'assets/audio/singles/veins/butterfly-dust.mp3' }
     ]},
-    { title:'NIGHT DRIVE', date:'2024-10-18', cover:'assets/covers/night-drive.png', tracks:[
+    { title:'NIGHT DRIVE', date:'2019-11-18', cover:'assets/covers/night-drive.png', tracks:[
       { title:'Midnight Drive', src:'assets/audio/singles/night-drive/midnight-drive.mp3' },
       { title:'GLOW (빛나)', src:'assets/audio/singles/night-drive/glow.mp3' },
       { title:'Crisis (Nightfall DJ Remix)', src:'assets/audio/singles/night-drive/crisis-nightfall-dj-remix.mp3' }
     ]}
   ],
   mini: [
-    { title:'D I V I D E', date:'2024-02-16', cover:'assets/covers/divide.png', tracks:[
+    { title:'D I V I D E', date:'2020-02-18', cover:'assets/covers/divide.png', tracks:[
       { title:'Black Pulse', src:'assets/audio/mini/divide/black-pulse.mp3' },
       { title:'Still (그 자리에)', src:'assets/audio/mini/divide/still.mp3' },
       { title:'Obsidian', src:'assets/audio/mini/divide/obsidian.mp3' },
       { title:'Glass Voice', src:'assets/audio/mini/divide/glass-voice.mp3' },
       { title:'Crisis', src:'assets/audio/mini/divide/crisis.mp3' }
     ]},
-    { title:'CITY CHORDS', date:'2025-08-01', cover:'assets/covers/city-chords.png', tracks:[
+    { title:'CITY CHORDS', date:'2020-08-18', cover:'assets/covers/city-chords.png', tracks:[
       { title:'Love Frequency (러브 프리퀀시)', src:'assets/audio/mini/city-chords/love-frequency.mp3' },
       { title:'After Midnight (자정 이후)', src:'assets/audio/mini/city-chords/after-midnight.mp3' },
       { title:'City Loner (도시 외톨이)', src:'assets/audio/mini/city-chords/city-loner.mp3' },
@@ -29,7 +29,7 @@ const LIBRARY = {
     ]}
   ],
   albums: [
-    { title:'HALO // HAVOC', date:'2025-06-13', cover:'assets/covers/halo-havoc.png', tracks:[
+    { title:'HALO // HAVOC', date:'2021-08-18', cover:'assets/covers/halo-havoc.png', tracks:[
       { title:'ICON', src:'assets/audio/albums/halo-havoc/icon.mp3' },
       { title:'PARADE', src:'assets/audio/albums/halo-havoc/parade.mp3' },
       { title:'ELECTR!K', src:'assets/audio/albums/halo-havoc/electrik.mp3' },
