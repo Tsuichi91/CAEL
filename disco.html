@@ -1,22 +1,31 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CΛEL — Discography</title>
-<link rel="stylesheet" href="assets/css/styles.css">
-<script src="assets/js/app.js"></script>
-
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CΛEL — Discography</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/app.js"></script>
+  <style>
+    /* Small helpers for the toolbar */
+    .toolbar{display:grid;gap:.6rem;grid-template-columns:1fr auto;align-items:center;margin:.6rem 0 1rem}
+    .toolbar .right{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+    .toolbar select{padding:.5rem .7rem;border:1px solid var(--border);border-radius:10px;background:var(--bg);color:var(--text)}
+    .disc-card img{width:100%;aspect-ratio:1/1;border-radius:12px;border:1px solid var(--border);object-fit:cover}
+    .disc-meta{color:var(--muted)}
+  </style>
 </head>
 <body>
 
 <header>
   <div class="container nav">
-<div class="brand">
-  <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
-  <span class="brand-title letter-spin">CΛEL</span>
-</div>
-    <nav class="navlinks" aria-label="Hauptnavigation">
+    <div class="brand">
+      <img class="brand-logo invert flutter" src="assets/logo.png" alt="CΛEL Logo">
+      <span class="brand-title letter-spin">CΛEL</span>
+    </div>
+    <nav class="navlinks" aria-label="Main navigation">
       <a href="index.html">Home</a>
       <a href="profile.html">Profile</a>
-      <a href="disco.html">Discography</a>
+      <a href="disco.html" class="active">Discography</a>
       <a href="tours.html">Tours</a>
       <a href="timeline.html">Timeline</a>
       <a href="player.html">Music Player</a>
@@ -26,21 +35,154 @@
     </nav>
   </div>
 </header>
+
 <main class="container">
+  <h2>Discography</h2>
 
-<h2>Discography</h2>
-<div class="grid" id="discGrid">
-  <article class="card"><img src="assets/covers/city-chords.png" alt="CITY CHORDS" style="width:100%;aspect-ratio:1;border-radius:12px;border:1px solid var(--border);object-fit:cover"><h3>CITY CHORDS</h3><div class="meta">Mini‑Album • 01.08.2025</div><details open><summary>Tracks</summary><ol class="tracks"><li>Love Frequency (러브 프리퀀시)</li><li>After Midnight (자정 이후)</li><li>City Loner (도시 외톨이)</li><li>Hey, You (거기 너)</li><li>Headspace (머릿속)</li></ol></details></article>
-  <article class="card"><img src="assets/covers/halo-havoc.png" alt="HALO // HAVOC" style="width:100%;aspect-ratio:1;border-radius:12px;border:1px solid var(--border);object-fit:cover"><h3>HALO // HAVOC</h3><div class="meta">Album • 13.06.2025</div><details><summary>Tracks</summary><ol class="tracks"><li>ICON</li><li>PARADE</li><li>ELECTR!K</li><li>IGNITE</li><li>DAY BY DAY (하루씩)</li><li>NONE</li><li>SHOCKWAVE</li><li>OUTLAW</li><li>PAPER SMILE</li><li>TIDELIGHT</li><li>STARDUST!</li><li>UNSENT LETTER</li></ol></details></article>
-  <article class="card"><img src="assets/covers/night-drive.png" alt="NIGHT DRIVE" style="width:100%;aspect-ratio:1;border-radius:12px;border:1px solid var(--border);object-fit:cover"><h3>NIGHT DRIVE</h3><div class="meta">Single • 18.10.2024</div><details><summary>Tracks</summary><ol class="tracks"><li>Midnight Drive</li><li>GLOW (빛나)</li><li>Crisis (Nightfall DJ Remix)</li></ol></details></article>
-  <article class="card"><img src="assets/covers/divide.png" alt="D I V I D E" style="width:100%;aspect-ratio:1;border-radius:12px;border:1px solid var(--border);object-fit:cover"><h3>D I V I D E</h3><div class="meta">Mini‑Album • 16.02.2024</div><details><summary>Tracks</summary><ol class="tracks"><li>Black Pulse</li><li>Still (그 자리에)</li><li>Obsidian</li><li>Glass Voice</li><li>Crisis</li></ol></details></article>
-  <article class="card"><img src="assets/covers/veins.png" alt="VEINS" style="width:100%;aspect-ratio:1;border-radius:12px;border:1px solid var(--border);object-fit:cover"><h3>VEINS</h3><div class="meta">Single • 18.08.2023</div><details><summary>Tracks</summary><ol class="tracks"><li>Veins</li><li>Grey Room</li><li>Butterfly Dust</li></ol></details></article>
-</div>
+  <!-- Filter + Sort -->
+  <div class="toolbar card">
+    <div class="tabs" role="tablist" aria-label="Filter by type">
+      <button class="tab active" data-type="all">All</button>
+      <button class="tab" data-type="single">Singles</button>
+      <button class="tab" data-type="mini">Mini-Albums</button>
+      <button class="tab" data-type="album">Full Albums</button>
+      <button class="tab" data-type="repackage">Repackaged</button>
+    </div>
+    <div class="right">
+      <label for="sort" class="meta">Sort</label>
+      <select id="sort" aria-label="Sort releases">
+        <option value="newest" selected>Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="az">A → Z</option>
+      </select>
+    </div>
+  </div>
 
+  <!-- Grid -->
+  <div class="grid" id="discGrid" aria-live="polite"></div>
 </main>
 
 <footer>
   <div class="container"><small>© <span id="year"></span> CΛEL — All Rights Reserved.</small></div>
 </footer>
 <script>__applyTheme();__markActive();</script>
-</body></html>
+
+<!-- Data + Render logic -->
+<script>
+  // ====== Data: add/adjust here ==================================================
+  // type: 'single' | 'mini' | 'album' | 'repackage'
+  const RELEASES = [
+    {
+      id:'city-chords', title:'CITY CHORDS', type:'mini', date:'2025-08-01',
+      cover:'assets/covers/city-chords.png',
+      tracks:['Love Frequency (러브 프리퀀시)','After Midnight (자정 이후)','City Loner (도시 외톨이)','Hey, You (거기 너)','Headspace (머릿속)']
+    },
+    {
+      id:'halo-havoc', title:'HALO // HAVOC', type:'album', date:'2025-06-13',
+      cover:'assets/covers/halo-havoc.png',
+      tracks:['ICON','PARADE','ELECTR!K','IGNITE','DAY BY DAY (하루씩)','NONE','SHOCKWAVE','OUTLAW','PAPER SMILE','TIDELIGHT','STARDUST!','UNSENT LETTER']
+    },
+    {
+      id:'night-drive', title:'NIGHT DRIVE', type:'single', date:'2024-10-18',
+      cover:'assets/covers/night-drive.png',
+      tracks:['Midnight Drive','GLOW (빛나)','Crisis (Nightfall DJ Remix)']
+    },
+    {
+      id:'divide', title:'D I V I D E', type:'mini', date:'2024-02-16',
+      cover:'assets/covers/divide.png',
+      tracks:['Black Pulse','Still (그 자리에)','Obsidian','Glass Voice','Crisis']
+    },
+    {
+      id:'veins', title:'VEINS', type:'single', date:'2023-08-18',
+      cover:'assets/covers/veins.png',
+      tracks:['Veins','Grey Room','Butterfly Dust']
+    },
+    // Example repackage (optional demo item):
+    // {
+    //   id:'halo-havoc-rp', title:'HALO // HAVOC (Repackaged)', type:'repackage', date:'2025-09-26',
+    //   cover:'assets/covers/halo-havoc-rp.png',
+    //   tracks:['ICON','PARADE','…','NEW TRACK 1','NEW TRACK 2']
+    // },
+  ];
+
+  const TYPE_LABEL = {
+    single: 'Single',
+    mini: 'Mini-Album',
+    album: 'Album',
+    repackage: 'Repackaged'
+  };
+
+  // ====== Helpers ================================================================
+  const grid = document.getElementById('discGrid');
+  const tabs = document.querySelectorAll('.tabs .tab');
+  const sortSel = document.getElementById('sort');
+
+  const fmtDate = iso => {
+    try { return new Date(iso+'T00:00:00').toLocaleDateString('en-GB'); }
+    catch { return iso; }
+  };
+
+  function currentType(){
+    return document.querySelector('.tabs .tab.active')?.dataset.type || 'all';
+  }
+
+  function getFiltered(){
+    const t = currentType();
+    return RELEASES.filter(r => t === 'all' ? true : r.type === t);
+  }
+
+  function sortItems(items){
+    const how = sortSel.value;
+    if(how === 'newest'){
+      items.sort((a,b)=> b.date.localeCompare(a.date));
+    }else if(how === 'oldest'){
+      items.sort((a,b)=> a.date.localeCompare(b.date));
+    }else if(how === 'az'){
+      items.sort((a,b)=> a.title.localeCompare(b.title, undefined, {sensitivity:'base'}));
+    }
+    return items;
+  }
+
+  function tracksHTML(list){
+    return '<ol class="tracks">' + (list||[]).map(t => `<li>${t}</li>`).join('') + '</ol>';
+  }
+
+  function cardHTML(r){
+    return `
+      <article class="card disc-card" data-type="${r.type}">
+        <img src="${r.cover}" alt="${r.title}">
+        <h3>${r.title}</h3>
+        <div class="disc-meta">${TYPE_LABEL[r.type] || r.type} • ${fmtDate(r.date)}</div>
+        <details ${r.id === 'city-chords' ? 'open':''}>
+          <summary>Tracks</summary>
+          ${tracksHTML(r.tracks)}
+        </details>
+      </article>
+    `;
+  }
+
+  function render(){
+    const items = sortItems(getFiltered().slice());
+    if(!items.length){
+      grid.innerHTML = '<div class="meta">No releases found.</div>';
+      return;
+    }
+    grid.innerHTML = items.map(cardHTML).join('');
+  }
+
+  // ====== UI bindings ============================================================
+  tabs.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      tabs.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      render();
+    });
+  });
+
+  sortSel.addEventListener('change', render);
+
+  // Initial render
+  render();
+</script>
+</body>
+</html>
