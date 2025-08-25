@@ -10,6 +10,12 @@ const LIBRARY = {
       { title:'Midnight Drive', src:'assets/audio/singles/night-drive/midnight-drive.mp3' },
       { title:'GLOW (빛나)', src:'assets/audio/singles/night-drive/glow.mp3' },
       { title:'Crisis (Nightfall DJ Remix)', src:'assets/audio/singles/night-drive/crisis-nightfall-dj-remix.mp3' }
+    ]},
+    { title:'REDiΛL', date:'2020-05-18', cover:'assets/covers/redial.png', tracks:[
+      { title:'HOME SIGNAL (신호)', src:'assets/audio/singles/redial/home-signal.mp3' },
+      { title:'너의 사람 (Be Your Man)', src:'assets/audio/singles/redial/be-your-man.mp3' },
+      { title:'BREAKLINE (균열)', src:'assets/audio/singles/redial/breakline.mp3' },
+      { title:'MAN CRUSH (월요일의 남자)', src:'assets/audio/singles/redial/man-crush.mp3' }
     ]}
   ],
   mini: [
